@@ -1,7 +1,20 @@
--- Drop and recreate Users table (Example)
-
 DROP TABLE IF EXISTS users CASCADE;
+
 CREATE TABLE users (
+  id SERIAL PRIMARY KEY NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE types (
   id SERIAL PRIMARY KEY NOT NULL,
   name VARCHAR(255) NOT NULL
 );
+
+CREATE TABLE favourites (
+  id SERIAL PRIMARY KEY NOT NULL,
+  favourited_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  post_id INTEGER REFERENCES posts(id) ON DELETE CASCADE
+  CONSTRAINT favourite_id FOREIGN KEY (post_id/favourited_id) REFERENCES favourites(post_id/favourited_id) 
+)
