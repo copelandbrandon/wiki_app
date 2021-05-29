@@ -5,5 +5,5 @@ CREATE TABLE comments (
   post_id INTEGER REFERENCES posts(id) ON DELETE CASCADE NOT NULL,
   commenter_id INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL,
   rating SMALLINT NOT NULL,
-  comment_body VARCHAR(255)--Can be null
+  comment_body VARCHAR(128)--Can be null
 );
