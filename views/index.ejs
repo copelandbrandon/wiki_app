@@ -27,7 +27,6 @@
 
 
   </head>
-
   <body>
     <nav>
       <div>WiKi</div>
@@ -37,11 +36,13 @@
         </a>
       </div>
       <div id="searchBoxContainer">
-          <input type="text" name="searchBoxInput" placeholder="Search" role="combobox">
+        <form action ="/search" method="POST">
+        <input type="text" name="searchBoxInput" placeholder="Search" role="combobox">
+        </form>
       </div>
       <div>
         <button class="login" tabindex="0">
-          <i class="far fa-user-circle"></i>
+          <i class="fas fa-user-circle"></i>
           <span>log in</span>
         </button>
       </div>
@@ -49,6 +50,5 @@
     <header>
       <div></div>
     </header>
-
   </body>
 </html>
