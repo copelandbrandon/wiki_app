@@ -11,10 +11,22 @@ const app        = express();
 const morgan     = require('morgan');
 
 // PG database client/connection setup
+// const dbParams = {
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASS,
+//   database: process.env.DB_NAME
+// }
 const { Pool } = require('pg');
 const dbParams = require('./lib/db.js');
 const db = new Pool(dbParams);
-db.connect();
+db.connect()
+.then(res => {
+  return console.log('db connected');
+})
+.catch((err) => {
+  console.log('error: ', err);
+});
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
