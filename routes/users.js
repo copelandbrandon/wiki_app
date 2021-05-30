@@ -160,7 +160,7 @@ module.exports = (db) => {
       });
   })
 
-  routes.post("/:id/:postid/comment", (req, res) => {
+  router.post("/:id/:postid/comment", (req, res) => {
     let comment = req.body.comment;
     let userId = req.params.id;
     let rating = req.body.rating;
