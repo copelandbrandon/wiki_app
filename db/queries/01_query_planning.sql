@@ -35,7 +35,7 @@ VALUES ('https://www.hackerrank.com/dashboard', 'HackerRank', 'description', 1, 
 
 SELECT posts.*, favourites.*, users.name, types.* FROM posts INNER JOIN favourites ON posts.id = post_id INNER JOIN users ON users.id = viewer_id INNER JOIN types ON resource_type_id = types.id WHERE users.id = 1;
 
---    POST 
+--    POST
 --    will need to insert new favourite into favourites
 
 INSERT INTO favourites (post_id, viewer_id) VALUES ($1, $2);
