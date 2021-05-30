@@ -5,7 +5,7 @@
  * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
  */
 
-const { query } = require('express');
+const { query, Router } = require('express');
 const express = require('express');
 const router = express.Router();
 
@@ -15,7 +15,7 @@ module.exports = (db) => {
     FROM posts INNER JOIN users ON users.id = poster_id
     INNER JOIN types ON resource_type_id = types.id;`)
       .then(data => {
-        console.log('inside the then', data.rows);
+        // console.log('inside the then', data.rows);
         const users = data.rows;
         res.json({ users });
       })
@@ -160,7 +160,7 @@ module.exports = (db) => {
       });
   })
 
-  routes.post("/:id/:postid/comment", (req, res) => {
+  router.post("/:id/:postid/comment", (req, res) => {
     let comment = req.body.comment;
     let userId = req.params.id;
     let rating = req.body.rating;
