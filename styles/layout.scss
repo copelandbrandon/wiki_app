@@ -1,9 +1,16 @@
 // See: https://sass-lang.com/
 
-body {
-  background-color: #EEE;
+html {
+  box-sizing: border-box;
+}
 
-  h1 {
-    color: #244751;
-  }
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  color: #545149;
+  background-color: #f4f1ec;
+  font-size: 24px;
+  font-weight: normal;
 }
