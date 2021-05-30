@@ -7,5 +7,6 @@ CREATE TABLE posts (
   description VARCHAR(255),--Can be null
   poster_id INTEGER REFERENCES posts(id) ON DELETE CASCADE NOT NULL,
   resource_type_id INTEGER REFERENCES types(id) ON DELETE CASCADE NOT NULL,
-  topic VARCHAR(255) NOT NULL
+  topic VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW,
 );
