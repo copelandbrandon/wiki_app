@@ -8,6 +8,7 @@
 const { query, Router } = require('express');
 const express = require('express');
 const router = express.Router();
+// const cookieSession = require('cookie-session')
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
@@ -15,9 +16,8 @@ module.exports = (db) => {
     FROM posts INNER JOIN users ON users.id = poster_id
     INNER JOIN types ON resource_type_id = types.id;`)
       .then(data => {
-        // console.log('inside the then', data.rows);
-        const users = data.rows;
-        res.json({ users });
+        const posts = data.rows;
+        res.json({ posts });
       })
       .catch(err => {
         res
@@ -34,7 +34,6 @@ module.exports = (db) => {
     INNER JOIN types ON resource_type_id = types.id
     WHERE post_id = $1;`, [postId])
       .then(data => {
-        console.log(data.rows);
         const post = data.rows;
         res.json({ post });
       })
@@ -45,41 +44,42 @@ module.exports = (db) => {
       });
   })
 
-  router.get("/search", (req, res) => {
+  router.post("/search", (req, res) => {
     let topic = req.body.topic;
     let type = req.body.type;
     let title = req.body.title;
-    let queryString = `SELECT posts.*, users.name, types.* FROM posts INNER JOIN users ON users.id = poster_id INNER JOIN types ON resource_type_id = types.id`;
+    let queryString = `SELECT posts.*, users.name AS poster_name, types.* FROM posts INNER JOIN users ON users.id = poster_id INNER JOIN types ON resource_type_id = types.id`;
     let queryParams = [];
 
-    if (title) {
-      queryParams.push(title);
-      queryString += ` WHERE posts.title LIKE '%$${queryParams.length}%';`
+    if (title !== "") {
+      queryParams.push(`%${title}%`);
+      queryString += ` WHERE LOWER(posts.title) LIKE LOWER($${queryParams.length})`
     };
 
-    if (topic) {
-      queryParams.push(topic);
+    if (topic !== "") {
+      queryParams.push(`%${topic}%`);
       if (title) {
-        queryString += ` AND posts.topic LIKE '%$${queryParams.length}%';`
+        queryString += ` AND LOWER(posts.topic) LIKE LOWER($${queryParams.length})`
       } else {
-        queryString += ` WHERE posts.topic LIKE '%$${queryParams.length}%';`
+        queryString += ` WHERE LOWER(posts.topic) LIKE LOWER($${queryParams.length})`
       }
     };
 
-    if (type) {
-      queryParams.push(type);
+    if (type !== "*") {
+      queryParams.push(`${type}`);
       if (title || topic) {
-        queryString += ` AND posts.type = '$${queryParams.length}';`;
+        queryString += ` AND resource_type_id = $${queryParams.length}`;
       } else {
-        queryString += ` WHERE posts.type = '$${queryParams.length}';`;
+        queryString += ` WHERE resource_type_id = $${queryParams.length}`;
       }
     }
 
+    queryString += ";";
+
     db.query(queryString, queryParams)
       .then(data => {
-        console.log(data.rows);
-        const post = data.rows;
-        res.json({ post });
+        const posts = data.rows;
+        res.json({ posts });
       })
       .catch(err => {
         res
@@ -98,9 +98,8 @@ module.exports = (db) => {
     WHERE users.id = $1;
     `, [userId])
       .then(data => {
-        console.log(data.rows);
-        const post = data.rows;
-        res.json({ post });
+        const posts = data.rows;
+        res.json({ posts });
       })
       .catch(err => {
         res
@@ -123,7 +122,6 @@ module.exports = (db) => {
       VALUES ($1, $2, $3, $4, $5, $6)
     `, [url, title, description, poster_id, type, topic])
       .then(data => {
-        console.log(data.rows);
         const post = data.rows;
         res.json({ post });
       })
@@ -149,7 +147,6 @@ module.exports = (db) => {
       `)
       })
       .then(data => {
-        console.log(data.rows);
         const post = data.rows;
         res.json({ post });
       })
@@ -171,7 +168,6 @@ module.exports = (db) => {
     RETURNING *;
     `, [postid, userId, rating, comment])
       .then(data => {
-        console.log(data.rows);
         const post = data.rows;
         res.json({ post });
       })

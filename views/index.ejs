@@ -1,82 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Meta Information -->
-    <title>Home Page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- App CSS -->
-    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/posts.css" type="text/css" />
-    <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+<head>
+  <!-- Meta Information -->
+  <title>Home Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- External CSS -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet">
+  <!-- App CSS -->
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/posts.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
 
-
-    <!-- App JS -->
-    <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-    <script type="text/javascript" src="/scripts/app.js"></script>
-
-    <!-- External JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!-- External CSS -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet">
 
 
-  </head>
-  <body>
-    <nav>
-      <div class="href">
-        <div class="home">
-        <a href="/" id="pagename" >
+  <!-- App JS -->
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  <script type="text/javascript" src="/scripts/app.js"></script>
+
+  <!-- External JS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/timeago.js/4.0.2/timeago.min.js"
+    integrity="sha512-SVDh1zH5N9ChofSlNAK43lcNS7lWze6DTVx1JCXH1Tmno+0/1jMpdbR8YDgDUfcUrPp1xyE53G42GFrcM0CMVg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!--Font Awesome-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body>
+  <nav>
+    <div class="href">
+      <div class="home">
+        <a href="/" id="pagename">
           <span>UpSkill</span>
         </a>
-        </div>
+      </div>
       <div class="favourite">
         <a href="/" id="wall">
           <span>My Wall</span>
         </a>
       </div>
+    </div>
+    <div class="search">
+      <span>Search</span>
+    </div>
+    <div>
+      <button class="login" tabindex="0">
+        <i class="far fa-user-circle"></i>
+        <span>log in</span>
+      </button>
+    </div>
+  </nav>
+  <div id="searchBoxContainer">
+    <form action="/api/users/search" METHOD="POST" class="search_form" id="search-form">
+      <div class="label">
+        <label for="title">Title:</label>
+        <textarea id="title" name="title"></textarea>
       </div>
-      <div class="search">
-          <span>Search</span>
+      <div class="label">
+        <label for="topic">Topic:</label>
+        <textarea id="topic" name="topic"></textarea>
       </div>
       <div>
-        <button class="login" tabindex="0">
-          <i class="far fa-user-circle"></i>
-          <span>log in</span>
-        </button>
+        <label for="type">Type:</label>
+        <select name="type" id="type">
+          <option value=*>All</option>
+          <option value="1">Video</option>
+          <option value="2">Article</option>
+          <option value="3">Quiz</option>
+          <option value="4">Blog</option>
+          <option value="5">Documentation</option>
+          <option value="6">Resource Hub</option>
+        </select>
+        <button type="Submit">Submit</button>
       </div>
-    </nav>
-    <div id="searchBoxContainer">
-      <form action= "/search" METHOD = "POST" class ="search_form">
-        <div class = "label">
-          <label for="title">Title:</label>
-          <textarea id="title" name = "text" ></textarea>
-        </div>
-        <div class = "label">
-          <label for="topic">Topic:</label>
-          <textarea id="topic" name = "text" ></textarea>
-        </div>
-        <div>
-          <label for="type">Type:</label>
-          <select name="text" id="type">
-            <option value="all">All</option>
-            <option value="video">Video</option>
-            <option value="article">Article</option>
-            <option value="quiz">Quiz</option>
-            <option value="blog">Blog</option>
-            <option value="documentation">Documentation</option>
-            <option value="resource hub">Resource Hub</option>
-          </select>
-          <button type="Submit">Submit</button>
-        </div>
-      </form>
-    </div>
-    <header>
-      <div class = "text-post"></div>
-    </header>
-  </body>
+    </form>
+  </div>
+  <header>
+    <div class="text-post"></div>
+  </header>
+</body>
+
 </html>

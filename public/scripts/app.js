@@ -1,17 +1,5 @@
-// $(() => {
-//   $.ajax({
-//     method: "GET",
-//     url: "/api/users"
-//   }).done((users) => {
-//     for(user of users) {
-//       $("<div>").text(user.name).appendTo($("body"));
-//     }
-//   });;
-// });
-
 const renderPost = function (posts) {
-  console.log(posts);
-  for (const obj of posts.users) {
+  for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
     $(".text-post").prepend(postHTML);
   }
@@ -36,7 +24,7 @@ const createPostHtml = function (obj) {
     <h6>${description}</h6>
   </body>
   <footer id= "timestamp">
-    <h6>${created}</h6>
+    <span>${timeago.format(created)}</span><span></i><i class="fas fa-heart"></i></span>
   </footer>
   </div>
   `;
@@ -44,11 +32,27 @@ const createPostHtml = function (obj) {
 }
 
 $(document).ready(function () {
-  console.log('ready')
+
   $.ajax('/api/users', {
     method: "GET",
   })
+  .then(function (posts) {
+    console.log("first render", posts);
+    renderPost(posts);
+  })
+
+  $(`#search-form`).submit(function(ev) {
+    ev.preventDefault();
+    const title = $('#title').val();
+    const topic = $('#topic').val();
+    const type = $('#type').val();
+    const dataObj = {title, topic, type};
+
+    $.post('/api/users/search', dataObj)
     .then(function (posts) {
+      $(".text-post").empty();
       renderPost(posts);
     })
+
+  })
 })
