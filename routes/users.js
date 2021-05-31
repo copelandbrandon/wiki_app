@@ -5,17 +5,17 @@
  * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
  */
 
-const { query } = require('express');
+const { query, Router } = require('express');
 const express = require('express');
 const router = express.Router();
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
-    db.query(`SELECT posts.*, users.name, types.*
+    db.query(`SELECT posts.*, users.name AS poster_name, types.*
     FROM posts INNER JOIN users ON users.id = poster_id
     INNER JOIN types ON resource_type_id = types.id;`)
       .then(data => {
-        console.log('inside the then', data.rows);
+        // console.log('inside the then', data.rows);
         const users = data.rows;
         res.json({ users });
       })

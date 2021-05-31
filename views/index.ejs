@@ -25,9 +25,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 
-
   </head>
-
   <body>
     <nav>
       <div>WiKi</div>
@@ -37,7 +35,20 @@
         </a>
       </div>
       <div id="searchBoxContainer">
-          <input type="text" name="searchBoxInput" placeholder="Search" role="combobox">
+        <form action= "/search" METHOD = "POST">
+          <textarea id="title" name = "text" placeholder="title" ></textarea>
+          <textarea id="topic" name = "text" placeholder="topic"></textarea>
+          <select name="text" id="type">
+            <option value="all">All</option>
+            <option value="video">Video</option>
+            <option value="article">Article</option>
+            <option value="quiz">Quiz</option>
+            <option value="blog">Blog</option>
+            <option value="documentation">Documentation</option>
+            <option value="resource hub">Resource Hub</option>
+            </select>
+            <button type="Submit">Submit</button>
+        </form>
       </div>
       <div>
         <button class="login" tabindex="0">
@@ -47,8 +58,7 @@
       </div>
     </nav>
     <header>
-      <div></div>
+      <div class = "text-post"></div>
     </header>
-
   </body>
 </html>
