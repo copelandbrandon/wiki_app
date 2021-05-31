@@ -28,27 +28,20 @@
   </head>
   <body>
     <nav>
-      <div>WiKi</div>
-      <div class="home">
-        <a href="/" rel="" tabindex="0">
-          <span>Home</span>
+      <div class="href">
+        <div class="home">
+        <a href="/" id="pagename" >
+          <span>UpSkill</span>
+        </a>
+        </div>
+      <div class="favourite">
+        <a href="/" id="wall">
+          <span>My Wall</span>
         </a>
       </div>
-      <div id="searchBoxContainer">
-        <form action= "/search" METHOD = "POST">
-          <textarea id="title" name = "text" placeholder="title" ></textarea>
-          <textarea id="topic" name = "text" placeholder="topic"></textarea>
-          <select name="text" id="type">
-            <option value="all">All</option>
-            <option value="video">Video</option>
-            <option value="article">Article</option>
-            <option value="quiz">Quiz</option>
-            <option value="blog">Blog</option>
-            <option value="documentation">Documentation</option>
-            <option value="resource hub">Resource Hub</option>
-            </select>
-            <button type="Submit">Submit</button>
-        </form>
+      </div>
+      <div class="search">
+          <span>Search</span>
       </div>
       <div>
         <button class="login" tabindex="0">
@@ -57,8 +50,33 @@
         </button>
       </div>
     </nav>
+    <div id="searchBoxContainer">
+      <form action= "/search" METHOD = "POST" class ="search_form">
+        <div class = "label">
+          <label for="title">Title:</label>
+          <textarea id="title" name = "text" ></textarea>
+        </div>
+        <div class = "label">
+          <label for="topic">Topic:</label>
+          <textarea id="topic" name = "text" ></textarea>
+        </div>
+        <div>
+          <label for="type">Type:</label>
+          <select name="text" id="type">
+            <option value="all">All</option>
+            <option value="video">Video</option>
+            <option value="article">Article</option>
+            <option value="quiz">Quiz</option>
+            <option value="blog">Blog</option>
+            <option value="documentation">Documentation</option>
+            <option value="resource hub">Resource Hub</option>
+          </select>
+          <button type="Submit">Submit</button>
+        </div>
+      </form>
+    </div>
     <header>
-      <div class = "text-post" id ="content"></div>
+      <div class = "text-post"></div>
     </header>
   </body>
 </html>

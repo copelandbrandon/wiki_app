@@ -1,4 +1,4 @@
--- Users table seeds here (Example)
+-- Users table seeds here
 INSERT INTO users (name, email, password) VALUES ('Alice', 'aCarrero@gmail.com', 'password');
 INSERT INTO users (name, email, password) VALUES ('Kira', 'kGimble@rocketmail.com', 'password');
 INSERT INTO users (name, email, password) VALUES ('Charles', 'charlesG@hotmail.com', 'password');
@@ -11,19 +11,29 @@ INSERT INTO users (name, email, password) Values ('Frodo', 'ringbearer42@shirema
 INSERT INTO users (name, email, password) Values ('Jeanine', 'jeanqueen@hotmail.com', 'password');
 INSERT INTO users (name, email, password) Values ('Carlie', 'carlieSimone@gmail.com', 'password');
 
+--Types table seeds here
 INSERT INTO types (name) VALUES ('Video');
 INSERT INTO types (name) VALUES ('Article');
 INSERT INTO types (name) VALUES ('Quiz');
 INSERT INTO types (name) VALUES ('Blog');
 INSERT INTO types (name) VALUES ('Documentation');
 INSERT INTO types (name) VALUES ('Resource Hub');
+--INSERT INTO types (name) VALUES ('Podcast);
 
+--Favourites table seeds here
 INSERT INTO favourites (post_id, viewer_id) VALUES (1, 10);
 INSERT INTO favourites (post_id, viewer_id) VALUES (1, 7);
 INSERT INTO favourites (post_id, viewer_id) VALUES (3, 9);
 INSERT INTO favourites (post_id, viewer_id) VALUES (2, 6);
 INSERT INTO favourites (post_id, viewer_id) VALUES (5, 1);
 
+INSERT INTO favourites (post_id, viewer_id) VALUES (6, 5);
+INSERT INTO favourites (post_id, viewer_id) VALUES (8, 1);
+INSERT INTO favourites (post_id, viewer_id) VALUES (9, 8);
+INSERT INTO favourites (post_id, viewer_id) VALUES (5, 5);
+INSERT INTO favourites (post_id, viewer_id) VALUES (4, 1);
+
+--Posts table seeds here
 INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
 VALUES ('https://www.hackerrank.com/dashboard', 'HackerRank', 'description', 1, 6, 'Coding basics');
 INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
@@ -46,12 +56,18 @@ VALUES ('https://www.khanacademy.org/humanities/art-history', 'Art History with 
 INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
 VALUES ('https://www.khanacademy.org/science/ap-college-environmental-science', 'Env Science with Khan Academy', 'description', 9, 6, 'Science');
 
-INSERT INTO favourites (post_id, viewer_id) VALUES (6, 5);
-INSERT INTO favourites (post_id, viewer_id) VALUES (8, 1);
-INSERT INTO favourites (post_id, viewer_id) VALUES (9, 8);
-INSERT INTO favourites (post_id, viewer_id) VALUES (5, 5);
-INSERT INTO favourites (post_id, viewer_id) VALUES (4, 1);
+--INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
+--VALUES ('https://www.youtube.com/watch?v=b4b8ktEV4Bg', 'Hashing algorithms', 'description', 1, 1, 'Web security');
+--INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
+--VALUES ('https://web-design-weekly.com/viewport-units-vw-vh-vmin-vmax/', 'Web Design', 'description', 4, 2, 'Viewport Units');
+--INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
+--VALUES ('https://elearningindustry.com/', 'Elearning Industry', 'description', 3, 4, 'general learning');
+--INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
+--VALUES ('https://www.theedublogger.com/prompts-student-writing/', 'Blog Publishing Tips', 'description', 5, 4, 'Writing prompts');
+--INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
+--VALUES ('https://www.britannica.com/quiz/parts-of-a-cell', 'Parts of a cell', 'description', 7, 3, 'Biology');
 
+--Comments table seeds here
 INSERT INTO comments (post_id, commenter_id, rating, comment_body)
 VALUES (1, 7, 5, 'Woah I love this!');
 INSERT INTO comments (post_id, commenter_id, rating, comment_body)

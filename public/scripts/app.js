@@ -8,6 +8,7 @@
 //     }
 //   });;
 // });
+
 const renderPost = function (posts) {
   console.log(posts);
   for (const obj of posts.users) {
@@ -26,14 +27,17 @@ const createPostHtml = function (obj) {
   let name = obj.poster_name;
 
   let $html = `
-  <div class = "posts" id="content">
-  <h1>${title}</h1>
-  <h1>${url}</h1>
-  <h1>${description}</h1>
-  <h1>${type}</h1>
-  <h1>${topic}</h1>
-  <h1>${created}</h1>
-  <h1>${name}</h1>
+  <div class = "posts">
+  <header>
+    <h4>${title}</h4>
+    <h5>By: ${name}</h5>
+  </header>
+  <body>
+    <h6>${description}</h6>
+  </body>
+  <footer id= "timestamp">
+    <h6>${created}</h6>
+  </footer>
   </div>
   `;
   return $html;
