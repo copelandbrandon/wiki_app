@@ -26,7 +26,7 @@ const createPostHtml = function (obj) {
   let name = obj.poster_name;
 
   let $html = `
-  <div class = "posts">
+  <div class = "posts" id="content">
   <h1>${title}</h1>
   <h1>${url}</h1>
   <h1>${description}</h1>

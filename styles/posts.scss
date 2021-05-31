@@ -1,0 +1,14 @@
+#content {
+  display: grid;
+  align-items: space-between;
+  border: 1px solid #7171c9;
+  font-size:12px;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+  padding-left: 10%;
+  padding-top:120px;
+  grid-template-columns: 240px 240px 240px 240px 240px;
+  grid-template-rows: 360px 360px 360px 360px 360px;
+  margin-bottom: 20px;
+}

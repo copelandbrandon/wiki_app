@@ -3,10 +3,12 @@ nav {
   background: transparent;
   width: 100%;
   padding: 1em;
-  font-family: 'Sigmar One', cursive;
-  font-size: 36px;
+  font-family: Helvetica;
+  font-size: 24px;
   display: flex;
   justify-content: space-between;
+  position:fixed;
+  top:0;
   .home {
     height: 48px;
     min-width: 60px;
