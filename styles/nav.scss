@@ -29,6 +29,33 @@ nav {
   }
 
 }
+
+#searchBoxContainer {
+  height: auto;
+  background-color: greenyellow;
+  padding-bottom: 20px;
+  width: auto;
+  margin-left: 20%;
+  margin-right: 20%;
+  border-radius:0px 0px 30px 30px;
+  .label{
+    vertical-align: center;
+  }
+
+  textarea {
+    border-radius: 25px;
+    font-size: small;
+    resize: none;
+    overflow: hidden;
+    outline: none;
+  }
+
+  select{
+    border-radius: 25px;
+    font-size: small;
+    outline: none;
+  }
+}
 .search_form {
   min-width: 200px;
   padding-top: 100px;
@@ -38,9 +65,11 @@ nav {
   justify-content: space-around;
 }
 
-#search_button {
+.buttons {
   height: 80px;
-  width: 300px;
+  width: 310px;
+  margin: -5px;
+  background-color: green;
 }
 
 textarea {

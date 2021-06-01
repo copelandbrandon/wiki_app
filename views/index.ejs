@@ -45,14 +45,10 @@
         </a>
       </div>
     </div>
-    <div class="favourite">
-        <span>My Wall</span>
-    </div>
-    <div class="search">
-      <button id="search_button">Search</button>
-    </div>
-    <div class="new-post">
-      <span>Compose Post</span>
+    <div class="buttons-div">
+        <button class = "buttons" id=favourite>My Wall</button>
+          <button class = "buttons" id="search_button">Search</button>
+          <button class = "buttons" id="new-post">Compose Post</button>
     </div>
     <div>
       <button class="login" tabindex="0">
@@ -71,7 +67,7 @@
         <label for="topic">Topic:</label>
         <textarea id="topic" name="topic"></textarea>
       </div>
-      <div>
+      <div class = "label">
         <label for="type">Type:</label>
         <select name="type" id="type">
           <option value=*>All</option>
@@ -82,6 +78,8 @@
           <option value="5">Documentation</option>
           <option value="6">Resource Hub</option>
         </select>
+        </div>
+        <div class = "label">
         <button type="Submit">Submit</button>
       </div>
     </form>

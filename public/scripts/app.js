@@ -57,14 +57,20 @@ const createPostHtml = function (obj) {
 }
 
 $(document).ready(function () {
-  $('.favourite').on('click');
+  $('#favourite').on('click');
   $(".new_post_form").hide();
+  $("#searchBoxContainer").hide();
+
   $.ajax('/api/users', {
     method: "GET",
   })
   .then(function (posts) {
     renderPost(posts);
   });
+
+  $("#search_button").click(function(){
+    $("#searchBoxContainer").slideToggle();
+  })
 
   $(`#search-form`).submit(function(ev) {
     ev.preventDefault();
@@ -79,9 +85,11 @@ $(document).ready(function () {
     })
   })
 
-  $('.favourite').click(function() {
+  $('#favourite').click(function() {
     $(".text-post").hide();
-    $('.favourite').off('click');
+    $('#favourite').off('click');
+
+
     $.get('/api/users/favourites')
     .then(function (posts) {
       renderMyFavs(posts);
@@ -94,7 +102,7 @@ $(document).ready(function () {
     })
   })
 
-  $(".new-post").click(function() {
+  $("#new-post").click(function() {
     $(".new_post_form").slideToggle();
   });
 
