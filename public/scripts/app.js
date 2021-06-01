@@ -42,7 +42,6 @@ const renderPost = function (posts) {
 };
 
 const renderComments = function(comments) {
-  console.log(comments);
   for (const comment of comments.posts) {
     let comment_body = comment.comment_body;
     let username = comment.username;
@@ -65,6 +64,7 @@ const renderComments = function(comments) {
   $(`form#${comment.post_id}`).append(commentArticle);
   }
 }
+
 const renderMyFavs = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
@@ -120,10 +120,28 @@ $(document).ready(function () {
     })
     .then(function() {
       $(".single_post").hide();
+      $("#comments_div").hide();
+
+      $("form.single_post").submit(function(ev) {
+        ev.preventDefault();
+        const comment = $(this).find("#new_comment").val();
+        const rating = $(this).find("#rating").val();
+        const postId = $(this).attr("id");
+        const dataObj = {comment, rating, postId}
+
+        $.post("/api/users/newcomment", dataObj)
+        .then(function(data){
+          renderComments(data)
+        })
+      })
+
       $(".posts").click(function () {
         $(".single_post").hide();
+        $("#comments_div").hide();
         let target = $(this).attr('id');
+
         $(`form.single_post#${target}`).slideToggle();
+        $("#comments_div").slideToggle();
         $('form.single_post').find('article').remove();
 
         $.post('/api/users/get_comments', { target })
@@ -186,10 +204,11 @@ $(document).ready(function () {
 
   });
 
-  $(".posts").click(function () {
-    $.get('/api/users/get_comments')
-      .then(function(comments) {
-      })
+  //FAVORITE BUTTON
+  $(".heart").click(function (ev) {
+    ev.preventDefault();
+    console.log("clicked the heart");
   })
+
 });
 

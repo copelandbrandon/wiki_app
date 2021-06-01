@@ -7,7 +7,8 @@ module.exports = (db) => {
 
     db.query(`SELECT posts.*, posts.id as post_id, users.name AS poster_name, types.*
     FROM posts INNER JOIN users ON users.id = poster_id
-    INNER JOIN types ON resource_type_id = types.id;`)
+    INNER JOIN types ON resource_type_id = types.id
+    ORDER BY created_at;`)
       .then(data => {
         const posts = data.rows;
         res.json({ posts });
@@ -26,7 +27,8 @@ module.exports = (db) => {
     db.query(`SELECT comments.*, users.name as username FROM comments
     INNER JOIN posts ON posts.id = post_id
     INNER JOIN users ON users.id = commenter_id
-    WHERE post_id = $1;`, [postId])
+    WHERE post_id = $1
+    ORDER BY created_at DESC;`, [postId])
       .then(data => {
         const posts = data.rows;
         res.json({ posts });
@@ -166,16 +168,22 @@ module.exports = (db) => {
       });
   })
 
-  router.post("/postid/comment", (req, res) => {
+  router.post("/newcomment", (req, res) => {
     let comment = req.body.comment;
-    let userId = req.params.id;
+    let userId = req.session.userId;
     let rating = req.body.rating;
-    let postid = req.params.postid;
+    let postid = req.body.postId;
 
     db.query(`INSERT INTO comments (post_id, commenter_id, rating, comment_body)
     VALUES ($1, $2, $3, $4)
     RETURNING *;
     `, [postid, userId, rating, comment])
+    .then(function(data) {
+      return db.query(`SELECT comments.*, users.name as username FROM comments
+      INNER JOIN posts ON posts.id = post_id
+      INNER JOIN users ON users.id = commenter_id
+      WHERE comments.id = ${data.rows[0].id};`)
+    })
       .then(data => {
         const posts = data.rows;
         res.json({ posts });
