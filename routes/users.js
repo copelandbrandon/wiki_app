@@ -5,7 +5,7 @@ const router = express.Router();
 module.exports = (db) => {
   router.get("/", (req, res) => {
 
-    db.query(`SELECT posts.*, users.name AS poster_name, types.*
+    db.query(`SELECT posts.*, posts.id as post_id, users.name AS poster_name, types.*
     FROM posts INNER JOIN users ON users.id = poster_id
     INNER JOIN types ON resource_type_id = types.id;`)
       .then(data => {
@@ -19,12 +19,13 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/post_id", (req, res) => {
-    let postId = req.params.id;
-    db.query(`SELECT posts.*, users.name, comments.*, types.*
-    FROM posts INNER JOIN users ON users.id = poster_id
-    INNER JOIN comments ON posts.id = post_id
-    INNER JOIN types ON resource_type_id = types.id
+  router.post("/get_comments", (req, res) => {
+    // let postTitle = req.body.target.split("_")[0];
+    // let posterName = req.body.target.split("_")[1];
+    const postId = req.body.target;
+    db.query(`SELECT comments.*, users.name as username FROM comments
+    INNER JOIN posts ON posts.id = post_id
+    INNER JOIN users ON users.id = commenter_id
     WHERE post_id = $1;`, [postId])
       .then(data => {
         const posts = data.rows;
@@ -83,7 +84,6 @@ module.exports = (db) => {
 
   router.get("/favourites", (req, res) => {
     let userId = req.session.userId;
-    console.log('reach!');
     db.query(`
     SELECT posts.*, favourites.*,  users.name as poster_name FROM users JOIN posts on users.id = poster_id INNER JOIN favourites ON post_id = posts.id WHERE viewer_id = $1;
     `, [userId])
@@ -131,7 +131,6 @@ module.exports = (db) => {
         INNER JOIN types ON resource_type_id = types.id WHERE posts.url = $1`, [url])
       })
       .then(data => {
-        console.log("in post:", data);
         const posts = data.rows;
         res.json({ posts });
       })
@@ -186,10 +185,6 @@ module.exports = (db) => {
           .status(500)
           .json({ error: err.message });
       });
-  })
-
-  router.post("/delete", (req, res) => {
-    console.log(req.body);
   })
 
   return router;

@@ -7,20 +7,14 @@ const images = {
   6: "https://images.unsplash.com/photo-1598618589929-b1433d05cfc6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
 }
 
-const noSpaces = function(string) {
-  return string.split(" ").join("");
-}
 
 const renderPost = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
-    let objTitle = noSpaces(obj.title);
-    let wrapper = `<article class="posts" id ="${objTitle}_${obj.poster_name}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
-
-    console.log(obj)
+    let wrapper = `<article class="posts" id ="${obj.post_id}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
 
     let commentDiv = `
-      <form class = "single_post" id = "${objTitle}_${obj.poster_name}">
+      <form class = "single_post" id = "${obj.post_id}">
       <span id = "post_info">
       <h4>${obj.title}</h4>
       <h6>By: ${obj.poster_name}</h6>
@@ -29,9 +23,8 @@ const renderPost = function (posts) {
       <h6>${obj.url}</h6>
       <h6>${obj.description}</h6>
       </span>
-      <span id = "comments_section">
+
       <textarea id="new_comment">Something</textarea><div id="comments"></div>
-      </span>
       </form>
     `
     $(".text-post").prepend(wrapper);
@@ -39,6 +32,30 @@ const renderPost = function (posts) {
   }
 };
 
+const renderComments = function(comments) {
+  console.log(comments);
+  for (const comment of comments.posts) {
+    let comment_body = comment.comment_body;
+    let username = comment.username;
+    let rating = comment.rating;
+    let time = comment.created_at;
+    let commentArticle = `
+    <article id ='comment_article'>
+    <header>
+       <div>
+          <span> By: ${username}</span>
+       </div>
+    </header>
+       <p>${comment_body}</p>
+    <footer>
+       <div>${timeago.format(time)}</div>
+       <div>${rating}</div>
+    </footer>
+  </article>
+  `
+  $(`form#${comment.post_id}`).append(commentArticle);
+  }
+}
 const renderMyFavs = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
@@ -97,9 +114,13 @@ $(document).ready(function () {
       $(".posts").click(function () {
         $(".single_post").hide();
         let target = $(this).attr('id');
-        console.log(target);
         $(`form.single_post#${target}`).slideToggle();
+        // $('#comments_section').empty();
 
+        $.post('/api/users/get_comments', { target })
+        .then(function(comments) {
+          renderComments(comments);
+        })
       })
     });
 
@@ -143,21 +164,23 @@ $(document).ready(function () {
 
   $(".new_post_form").submit(function (ev) {
     ev.preventDefault();
-    console.log("reached!");
     const title = $('#new_title').val();
     const topic = $('#new_topic').val();
     const description = $('#new_description').val();
     const url = $('#new_url').val();
     const type = $('#new_type').val();
     const newPostObj = { title, topic, description, url, type };
-    console.log(newPostObj);
     $.post('/api/users/create/', newPostObj)
       .then(function (post) {
-        console.log(post);
         renderPost(post);
       })
 
-  })
+  });
 
+  $(".posts").click(function () {
+    $.get('/api/users/get_comments')
+      .then(function(comments) {
+      })
+  })
 });
 
