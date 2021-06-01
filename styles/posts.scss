@@ -23,6 +23,9 @@
   padding: 5px;
   background-position: center;
   background-size: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 h4 {

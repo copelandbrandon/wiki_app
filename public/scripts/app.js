@@ -21,17 +21,18 @@ const renderPost = function (posts) {
 
     let commentDiv = `
       <form class = "single_post" id = "${objTitle}_${obj.poster_name}">
-      <span id = "post_info">
-      <h4>${obj.title}</h4>
-      <h6>By: ${obj.poster_name}</h6>
-      <h6>${obj.topic}</h6>
-      <h6>${obj.name}</h6>
-      <h6>${obj.url}</h6>
-      <h6>${obj.description}</h6>
-      </span>
-      <span id = "comments_section">
-      <textarea id="new_comment">Something</textarea><div id="comments"></div>
-      </span>
+        <span id = "post_info">
+          <h4>${obj.title}</h4>
+          <h6>By: ${obj.poster_name}</h6>
+          <h6>${obj.topic}</h6>
+          <h6>${obj.name}</h6>
+          <h6>${obj.url}</h6>
+          <h6>${obj.description}</h6>
+        </span>
+        <span id = "comments_section">
+        <textarea id="new_comment" placeholder="comment"></textarea>
+        <div id="comments"></div>
+        </span>
       </form>
     `
     $(".text-post").prepend(wrapper);
