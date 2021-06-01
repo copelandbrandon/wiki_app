@@ -11,6 +11,7 @@ const router = express.Router();
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
+
     db.query(`SELECT posts.*, users.name AS poster_name, types.*
     FROM posts INNER JOIN users ON users.id = poster_id
     INNER JOIN types ON resource_type_id = types.id;`)
@@ -192,6 +193,10 @@ module.exports = (db) => {
           .status(500)
           .json({ error: err.message });
       });
+  })
+
+  router.post("/delete", (req, res) => {
+    console.log(req.body);
   })
 
   return router;

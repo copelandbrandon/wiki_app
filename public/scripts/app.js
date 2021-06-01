@@ -1,21 +1,24 @@
 const renderPost = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
-    $(".text-post").prepend(postHTML);
+    let wrapper = `<article class="posts">${postHTML}</article>`;
+    $(".text-post").prepend(wrapper);
   }
 };
 
 const renderMyFavs = function(posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
-    $(".favourite-post").prepend(postHTML);
+    let wrapper = `<article class="posts">${postHTML}</article>`;
+    $(".favourite-post").prepend(wrapper);
   }
 };
 
 const renderMyPosts = function(posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
-    $(".my-post").prepend(postHTML);
+    let wrapper = `<article class="posts">${postHTML}<form id="delete"><button type="submit">Delete</button></form></article>`;
+    $(".my-post").prepend(wrapper);
   }
 }
 const createPostHtml = function (obj) {
@@ -28,7 +31,6 @@ const createPostHtml = function (obj) {
   let name = obj.poster_name;
 
   let $html = `
-  <article class = "posts">
   <header>
     <h4>${title}</h4>
     <h5>By: ${name}</h5>
@@ -39,22 +41,21 @@ const createPostHtml = function (obj) {
   <footer id= "timestamp">
     <span>${timeago.format(created)}</span><span></i><i class="fas fa-heart"></i></span>
   </footer>
-  </article>
+
   `;
   return $html;
 }
 
 $(document).ready(function () {
+  
   $(".new_post_form").hide();
   $.ajax('/api/users', {
     method: "GET",
   })
   .then(function (posts) {
-    console.log("first render", posts);
-    renderPost(posts);  for (const obj of posts.posts) {
-      let postHTML = createPostHtml(obj);
-      $(".favourites-post").prepend(postHTML);
-    }
+    renderPost(posts);  
+  });
+
   $(`#search-form`).submit(function(ev) {
     ev.preventDefault();
     const title = $('#title').val();
@@ -81,7 +82,6 @@ $(document).ready(function () {
       })
     })
   })
-  })
 
   $(".new-post").click(function() {
     $(".new_post_form").slideToggle();
@@ -89,6 +89,7 @@ $(document).ready(function () {
 
   $(".new_post_form").submit(function(ev) {
     ev.preventDefault();
+    console.log("reached!");
     const title = $('#new_title').val();
     const topic = $('#new_topic').val();
     const description = $('#new_description').val();
@@ -101,5 +102,8 @@ $(document).ready(function () {
       console.log(post);
       renderPost(post);
     })
+
   })
+
 });
+
