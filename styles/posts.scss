@@ -23,6 +23,9 @@
   padding: 5px;
   background-position: center;
   background-size: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 h4 {
@@ -72,4 +75,8 @@ h6 {
 
 a {
   color: #f4f1ec;
+}
+
+.fa-heart:hover {
+  color:red;
 }

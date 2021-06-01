@@ -1,0 +1,26 @@
+#comments_div {
+  background-color: yellowgreen;
+  width: 100vw;
+  height:max-content;
+  position: fixed;
+  margin-top:250px;
+  width: 80%;
+  margin-left:10%;
+}
+
+.single_post {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#comments_section {
+  margin-top: 30px;
+}
+
+#new_comment {
+  border:none;
+  border-bottom: 3px solid black;
+  width: 500px;
+  background-color: yellowgreen;
+}
