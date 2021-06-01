@@ -24,11 +24,10 @@ nav {
     text-decoration: none;
     outline: none;
     margin-left: -250px;
-  }
-  .href {
     display: flex;
     justify-content: space-around;
   }
+
 }
 .search_form {
   min-width: 200px;
@@ -50,3 +49,12 @@ textarea {
   justify-content: center;
 }
 
+.new_post_form {
+  background-color: lightgrey;
+  height: auto;
+  width: auto;
+  position: absolute;
+  margin-left: 33%;
+  margin-right: 33%;
+  padding: 10px;
+}

@@ -8,14 +8,15 @@
   padding-left: 1em;
   padding-top:50px;
   grid-template-columns: 240px 240px 240px 240px 240px;
-  grid-template-rows: 300px 300px 300px 300px 300px;
-
+  grid-template-rows: 300px 300px;
+  height: auto;
 }
 
 .posts {
   border: 1px solid black;
   margin-bottom: 20px;
   text-align: center;
+  width: 250px;
 }
 
 h4 {
@@ -32,5 +33,28 @@ h6 {
 }
 
 #timestamp {
-  margin-top:8em;
+  font-size: 12pt;
+}
+
+.my-wall {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.favourite-post {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 50%;
+  justify-content: space-around;
+}
+
+.my-post {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 50%;
+  justify-content: space-around;
 }

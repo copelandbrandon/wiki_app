@@ -58,3 +58,10 @@ SELECT posts.*, users.name, types.* FROM posts INNER JOIN types ON resource_type
 
 INSERT INTO comments (post_id, commenter_id, rating, comment_body)
 VALUES ($1, $2, $3, $4);
+
+
+SELECT users.name, posts.title, posts.id FROM users INNER JOIN favourites ON users.id = viewer_id INNER JOIN posts ON posts.id = post_id;
+
+SELECT users.name FROM users JOIN posts on users.id = poster_id JOIN favourites ON post_id = posts.id WHERE viewer_id = 1;
+
+SELECT users.name, posts.title FROM users JOIN favourites ON viewer_id = 1 JOIN posts ON posts.id = post_id;

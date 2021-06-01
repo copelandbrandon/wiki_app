@@ -25,7 +25,7 @@ module.exports = (db) => {
       });
   });
 
-  router.get("/:id", (req, res) => {
+  router.get("/post_id", (req, res) => {
     let postId = req.params.id;
     db.query(`SELECT posts.*, users.name, comments.*, types.*
     FROM posts INNER JOIN users ON users.id = poster_id
@@ -33,8 +33,8 @@ module.exports = (db) => {
     INNER JOIN types ON resource_type_id = types.id
     WHERE post_id = $1;`, [postId])
       .then(data => {
-        const post = data.rows;
-        res.json({ post });
+        const posts = data.rows;
+        res.json({ posts });
       })
       .catch(err => {
         res
@@ -87,14 +87,11 @@ module.exports = (db) => {
       });
   })
 
-  router.get("/:id/favourites", (req, res) => {
-    let userId = req.params.id;
+  router.get("/favourites", (req, res) => {
+    let userId = req.session.userId;
+    console.log('reach!');
     db.query(`
-    SELECT posts.*, favourites.*, users.name, types.*
-    FROM posts INNER JOIN favourites ON posts.id = post_id
-    INNER JOIN users ON users.id = viewer_id INNER JOIN types
-    ON resource_type_id = types.id
-    WHERE users.id = $1;
+    SELECT posts.*, favourites.*,  users.name as poster_name FROM users JOIN posts on users.id = poster_id INNER JOIN favourites ON post_id = posts.id WHERE viewer_id = $1;
     `, [userId])
       .then(data => {
         const posts = data.rows;
@@ -106,10 +103,24 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
 
+    })
+    
+    router.get("/my_posts", (req, res) => {
+      let userId = req.session.userId;
+      db.query(`SELECT posts.*, users.name as poster_name FROM posts INNER JOIN users ON users.id = poster_id WHERE poster_id = $1`, [userId])
+        .then(data => {
+          const posts = data.rows;
+          res.json({ posts })
+        })
+        .catch(err => {
+          res 
+            .status(500)
+            .json({ error: err.message });
+        });
   })
 
-  router.post("/:id/create", (req, res) => {
-    let poster_id = req.params.id;
+  router.post("/create", (req, res) => {
+    let poster_id = req.session.userId;
     let url = req.body.url;
     let title = req.body.title;
     let description = req.body.description;
@@ -120,9 +131,15 @@ module.exports = (db) => {
       INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
       VALUES ($1, $2, $3, $4, $5, $6)
     `, [url, title, description, poster_id, type, topic])
+      .then(()=>{
+        return db.query(`SELECT posts.*, users.name AS poster_name, types.*
+        FROM posts INNER JOIN users ON users.id = poster_id
+        INNER JOIN types ON resource_type_id = types.id WHERE posts.url = $1`, [url])
+      })
       .then(data => {
-        const post = data.rows;
-        res.json({ post });
+        console.log("in post:", data);
+        const posts = data.rows;
+        res.json({ posts });
       })
       .catch(err => {
         res
@@ -132,7 +149,7 @@ module.exports = (db) => {
 
   })
 
-  router.post("/:id/liked", (req, res) => {
+  router.post("/liked", (req, res) => {
     let userId = req.params.id;
     let title = req.body.title;
     let user = req.body.user;
@@ -146,8 +163,8 @@ module.exports = (db) => {
       `)
       })
       .then(data => {
-        const post = data.rows;
-        res.json({ post });
+        const posts = data.rows;
+        res.json({ posts });
       })
       .catch(err => {
         res
@@ -156,7 +173,7 @@ module.exports = (db) => {
       });
   })
 
-  router.post("/:id/:postid/comment", (req, res) => {
+  router.post("/postid/comment", (req, res) => {
     let comment = req.body.comment;
     let userId = req.params.id;
     let rating = req.body.rating;
@@ -167,8 +184,8 @@ module.exports = (db) => {
     RETURNING *;
     `, [postid, userId, rating, comment])
       .then(data => {
-        const post = data.rows;
-        res.json({ post });
+        const posts = data.rows;
+        res.json({ posts });
       })
       .catch(err => {
         res
