@@ -1,17 +1,19 @@
 #comments_div {
   background-color: yellowgreen;
   width: 100vw;
-  height:max-content;
+  height:500px;
   position: fixed;
-  margin-top:250px;
+  margin-top:100px;
   width: 80%;
   margin-left:10%;
+  overflow: scroll;
 }
 
-.single_post {
+
+form.single_post {
   display: flex;
-  flex-direction: row;
   justify-content: space-around;
+  flex-direction: column;
 }
 
 #comments_section {
@@ -21,6 +23,29 @@
 #new_comment {
   border:none;
   border-bottom: 3px solid black;
-  width: 500px;
+  width: 100%;
   background-color: yellowgreen;
+  resize: none;
+  font-size: 12px;
 }
+
+footer {
+  display:flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-right: 10px;
+}
+
+#comment_article {
+  border: 2px solid black;
+  height:80px;
+  font-size:12px;
+}
+
+#post_info {
+  border: 2px solid black;
+  height: auto;
+  text-align: center;
+}
+
+

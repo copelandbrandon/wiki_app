@@ -23,8 +23,17 @@ const renderPost = function (posts) {
       <h6>${obj.url}</h6>
       <h6>${obj.description}</h6>
       </span>
-
-      <textarea id="new_comment">Something</textarea><div id="comments"></div>
+      <textarea id="new_comment">Something</textarea>
+      <div class= "submitComment" >
+      <button type="submit">Submit</button>
+      <select name="rating" id="rating">
+        <option value="1">VeryUnhelpful</option>
+       <option value="2">Unhelpful</option>
+       <option value="3" selected="selected">Adequate</option>
+       <option value="4">Helpful</option>
+       <option value="5">VeryHelpful</option>
+       </select>
+       </div>
       </form>
     `
     $(".text-post").prepend(wrapper);
@@ -115,7 +124,7 @@ $(document).ready(function () {
         $(".single_post").hide();
         let target = $(this).attr('id');
         $(`form.single_post#${target}`).slideToggle();
-        // $('#comments_section').empty();
+        $('form.single_post').find('article').remove();
 
         $.post('/api/users/get_comments', { target })
         .then(function(comments) {
