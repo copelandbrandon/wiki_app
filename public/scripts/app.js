@@ -30,6 +30,7 @@ const renderPost = function (posts) {
           <h6>${obj.description}</h6>
         </span>
         <span id = "comments_section">
+        <label for="user_comment">Comment:</label>
         <textarea id="new_comment" placeholder="comment"></textarea>
         <div id="comments"></div>
         </span>
