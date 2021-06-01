@@ -1,10 +1,3 @@
-/*
- * All routes for Users are defined here
- * Since this file is loaded in server.js into api/users,
- *   these routes are mounted onto /users
- * See: https://expressjs.com/en/guide/using-middleware.html#middleware.router
- */
-
 const { query, Router } = require('express');
 const express = require('express');
 const router = express.Router();
@@ -105,7 +98,7 @@ module.exports = (db) => {
       });
 
     })
-    
+
     router.get("/my_posts", (req, res) => {
       let userId = req.session.userId;
       db.query(`SELECT posts.*, users.name as poster_name FROM posts INNER JOIN users ON users.id = poster_id WHERE poster_id = $1`, [userId])
@@ -114,7 +107,7 @@ module.exports = (db) => {
           res.json({ posts })
         })
         .catch(err => {
-          res 
+          res
             .status(500)
             .json({ error: err.message });
         });

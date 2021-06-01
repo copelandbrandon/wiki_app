@@ -1,22 +1,27 @@
 .text-post {
-  display: grid;
-  align-items: space-between;
+  display: flex;
   font-size:12px;
   flex-direction: row;
-  width: 100%;
+  flex-wrap: wrap;
+  width: 100vw;
   justify-content: space-around;
   padding-left: 1em;
   padding-top:50px;
-  grid-template-columns: 240px 240px 240px 240px 240px;
-  grid-template-rows: 300px 300px;
   height: auto;
+  padding: 50px;
 }
 
 .posts {
   border: 1px solid black;
-  margin-bottom: 20px;
+  color: #f4f1ec;
+  border-radius: 25px;
+  margin: 10px;
   text-align: center;
-  width: 250px;
+  width: 275px;
+  height: 275px;
+  padding: 5px;
+  background-position: center;
+  background-size: auto;
 }
 
 h4 {
@@ -57,4 +62,8 @@ h6 {
   flex-wrap: wrap;
   width: 50%;
   justify-content: space-around;
+}
+
+a {
+  color: #f4f1ec;
 }

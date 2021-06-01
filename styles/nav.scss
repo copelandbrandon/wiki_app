@@ -1,7 +1,7 @@
 nav {
   height: 80px;
   background: green;
-  width: 100%;
+  width: 100vw;
   padding: 1em;
   font-family: Helvetica;
   font-size: 24px;
@@ -38,6 +38,11 @@ nav {
   justify-content: space-around;
 }
 
+#search_button {
+  height: 80px;
+  width: 300px;
+}
+
 textarea {
   height: 34px;
   width: 300px;
@@ -57,4 +62,13 @@ textarea {
   margin-left: 33%;
   margin-right: 33%;
   padding: 10px;
+}
+
+#source_button{
+  font-size: large;
+  font-weight: bolder;
+}
+
+#short_source{
+  text-decoration: none;
 }
