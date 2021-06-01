@@ -67,6 +67,17 @@ VALUES ('https://www.khanacademy.org/science/ap-college-environmental-science', 
 --INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
 --VALUES ('https://www.britannica.com/quiz/parts-of-a-cell', 'Parts of a cell', 'description', 7, 3, 'Biology');
 
+--INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
+--VALUES ('https://www.nature.com/articles/d41586-021-01441-w', 'Livestock Vaccination', 'description', 8, 7, 'Farming');
+--INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
+--VALUES ('https://www.youtube.com/watch?v=Y0HfmYBlF8g&t=12s', 'Making Aerogel', 'description', 6, 1, 'Chemistry');
+--INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
+--VALUES ('https://www.tomakemuchoftime.com/blog/scotland-accommodations?gclid=CjwKCAjwtdeFBhBAEiwAKOIy5zTft_Ay_GN3dUVp7D8azaPFqBL_0CBYCxkcxvW9s_Xnwx7yypXEoxoCl4QQAvD_BwE', 'Scotlands Accomodations', 'description', 7, 4, 'Travel');
+--INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
+--VALUES ('https://codingislove.com/generate-link-preview-webapp/', 'Generating link previews', 'description', 5, 2, 'Coding HTML');
+--INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
+--VALUES ('https://www.quantamagazine.org/black-hot-superionic-ice-may-be-natures-most-common-form-of-water-20190508/', 'Super-Ionic Ice', 'description', 7, 2, 'Science');
+
 --Comments table seeds here
 INSERT INTO comments (post_id, commenter_id, rating, comment_body)
 VALUES (1, 7, 5, 'Woah I love this!');
