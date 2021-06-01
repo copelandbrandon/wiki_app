@@ -7,15 +7,39 @@ const images = {
   6: "https://images.unsplash.com/photo-1598618589929-b1433d05cfc6?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
 }
 
+const noSpaces = function(string) {
+  return string.split(" ").join("");
+}
+
 const renderPost = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
-    let wrapper = `<article class="posts" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
+    let objTitle = noSpaces(obj.title);
+    let wrapper = `<article class="posts" id ="${objTitle}_${obj.poster_name}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
+
+    console.log(obj)
+
+    let commentDiv = `
+      <form class = "single_post" id = "${objTitle}_${obj.poster_name}">
+      <span id = "post_info">
+      <h4>${obj.title}</h4>
+      <h6>By: ${obj.poster_name}</h6>
+      <h6>${obj.topic}</h6>
+      <h6>${obj.name}</h6>
+      <h6>${obj.url}</h6>
+      <h6>${obj.description}</h6>
+      </span>
+      <span id = "comments_section">
+      <textarea id="new_comment">Something</textarea><div id="comments"></div>
+      </span>
+      </form>
+    `
     $(".text-post").prepend(wrapper);
+    $("#comments_div").prepend(commentDiv);
   }
 };
 
-const renderMyFavs = function(posts) {
+const renderMyFavs = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
     let wrapper = `<article class="posts" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;;
@@ -23,10 +47,10 @@ const renderMyFavs = function(posts) {
   }
 };
 
-const renderMyPosts = function(posts) {
+const renderMyPosts = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
-    let wrapper = `<article class="posts" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}<form id="delete"><button type="submit">Delete</button></form></article>`;
+    let wrapper = `<article class="posts" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
     $(".my-post").prepend(wrapper);
   }
 }
@@ -49,7 +73,8 @@ const createPostHtml = function (obj) {
     <div id ="source_button"><a href="${url}" id="short_source">Go To Source</a></div>
   </body>
   <footer id= "timestamp">
-    <span>Posted ${timeago.format(created)} </span><span></i><i class="fas fa-heart"></i></span>
+    <span>Posted ${timeago.format(created)} </span>
+    <span class ="heart"></i><i class="fas fa-heart fa-2x"></i></span>
   </footer>
 
   `;
@@ -64,49 +89,59 @@ $(document).ready(function () {
   $.ajax('/api/users', {
     method: "GET",
   })
-  .then(function (posts) {
-    renderPost(posts);
-  });
+    .then(function (posts) {
+      renderPost(posts);
+    })
+    .then(function() {
+      $(".single_post").hide();
+      $(".posts").click(function () {
+        $(".single_post").hide();
+        let target = $(this).attr('id');
+        console.log(target);
+        $(`form.single_post#${target}`).slideToggle();
 
-  $("#search_button").click(function(){
+      })
+    });
+
+  $("#search_button").click(function () {
     $("#searchBoxContainer").slideToggle();
   })
 
-  $(`#search-form`).submit(function(ev) {
+  $(`#search-form`).submit(function (ev) {
     ev.preventDefault();
     const title = $('#title').val();
     const topic = $('#topic').val();
     const type = $('#type').val();
-    const dataObj = {title, topic, type};
+    const dataObj = { title, topic, type };
     $.post('/api/users/search', dataObj)
-    .then(function (posts) {
-      $(".text-post").empty();
-      renderPost(posts);
-    })
+      .then(function (posts) {
+        $(".text-post").empty();
+        renderPost(posts);
+      })
   })
 
-  $('#favourite').click(function() {
+  $('#favourite').click(function () {
     $(".text-post").hide();
     $('#favourite').off('click');
 
 
     $.get('/api/users/favourites')
-    .then(function (posts) {
-      renderMyFavs(posts);
-    })
-    .then(function (){
-      $.get('api/users/my_posts')
       .then(function (posts) {
-        renderMyPosts(posts);
+        renderMyFavs(posts);
       })
-    })
+      .then(function () {
+        $.get('api/users/my_posts')
+          .then(function (posts) {
+            renderMyPosts(posts);
+          })
+      })
   })
 
-  $("#new-post").click(function() {
+  $("#new-post").click(function () {
     $(".new_post_form").slideToggle();
   });
 
-  $(".new_post_form").submit(function(ev) {
+  $(".new_post_form").submit(function (ev) {
     ev.preventDefault();
     console.log("reached!");
     const title = $('#new_title').val();
@@ -114,13 +149,13 @@ $(document).ready(function () {
     const description = $('#new_description').val();
     const url = $('#new_url').val();
     const type = $('#new_type').val();
-    const newPostObj = {title, topic, description, url, type};
+    const newPostObj = { title, topic, description, url, type };
     console.log(newPostObj);
     $.post('/api/users/create/', newPostObj)
-    .then(function(post) {
-      console.log(post);
-      renderPost(post);
-    })
+      .then(function (post) {
+        console.log(post);
+        renderPost(post);
+      })
 
   })
 

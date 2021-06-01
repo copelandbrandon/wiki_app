@@ -18,8 +18,8 @@
   border-radius: 25px;
   margin: 10px;
   text-align: center;
-  width: 275px;
-  height: 275px;
+  width: 250px;
+  height: 280px;
   padding: 5px;
   background-position: center;
   background-size: auto;
@@ -40,6 +40,9 @@ h6 {
 
 #timestamp {
   font-size: 12pt;
+  display: flex;
+  justify-content: space-between;
+  margin: 0.5em;
 }
 
 .my-wall {
@@ -47,6 +50,8 @@ h6 {
   flex-direction: row;
   justify-content: space-around;
   width: 100%;
+  margin-top: 90px;
+  padding: 50px;
 }
 
 .favourite-post {
