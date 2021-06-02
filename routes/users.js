@@ -44,7 +44,7 @@ module.exports = (db) => {
     let topic = req.body.topic;
     let type = req.body.type;
     let title = req.body.title;
-    let queryString = `SELECT posts.*, users.name AS poster_name, types.* FROM posts INNER JOIN users ON users.id = poster_id INNER JOIN types ON resource_type_id = types.id`;
+    let queryString = `SELECT posts.*, posts.id as post_id, users.name AS poster_name, types.* FROM posts INNER JOIN users ON users.id = poster_id INNER JOIN types ON resource_type_id = types.id`;
     let queryParams = [];
 
     if (title !== "") {
@@ -162,15 +162,6 @@ module.exports = (db) => {
         `)
       }
     })
-    // .then(data => {
-    //   const posts = data.rows;
-    //   res.json({ posts });
-    // })
-    // .catch(err => {
-    //   res
-    //     .status(500)
-    //     .json({ error: err.message });
-    // })
   })
 
 

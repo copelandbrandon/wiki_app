@@ -169,6 +169,7 @@ $(document).ready(function () {
 
   $(`#search-form`).submit(function (ev) {
     ev.preventDefault();
+
     const title = $('#title').val();
     const topic = $('#topic').val();
     const type = $('#type').val();
@@ -177,6 +178,20 @@ $(document).ready(function () {
       .then(function (posts) {
         $(".text-post").empty();
         renderPost(posts);
+
+        //CLICK HANDLER for submitting comments
+        $("form.single_post").submit(function (ev) {
+          ev.preventDefault();
+          const comment = $(this).find("#new_comment").val();
+          const rating = $(this).find("#rating").val();
+          const postId = $(this).attr("id");
+          const dataObj = { comment, rating, postId }
+
+          $.post("/api/users/newcomment", dataObj)
+            .then(function (data) {
+              renderComments(data)
+            })
+        })
 
         //CLICK HANLDER for rendered searched posts
         $(".posts").find("#post_titles").click(function () {
@@ -188,6 +203,7 @@ $(document).ready(function () {
           $("#comments_div").slideToggle();
           $('form.single_post').find('article').remove();
 
+          console.log(target);
           $.post('/api/users/get_comments', { target })
             .then(function (comments) {
               renderComments(comments);
