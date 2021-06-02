@@ -153,6 +153,7 @@ const createPostHtml = function (obj) {
 
 //event handlers and AJAX calls
 $(document).ready(function () {
+
   $('#favourite').on('click');
   $(".new_post_form").hide();
   $("#searchBoxContainer").hide();
