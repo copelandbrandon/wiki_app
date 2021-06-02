@@ -41,7 +41,7 @@ const renderPost = function (posts) {
   }
 };
 
-const renderComments = function(comments) {
+const renderComments = function (comments) {
   for (const comment of comments.posts) {
     let comment_body = comment.comment_body;
     let username = comment.username;
@@ -61,14 +61,14 @@ const renderComments = function(comments) {
     </footer>
   </article>
   `
-  $(`form#${comment.post_id}`).append(commentArticle);
+    $(`form#${comment.post_id}`).append(commentArticle);
   }
 }
 
 const renderMyFavs = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
-    let wrapper = `<article class="posts" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;;
+    let wrapper = `<article class="posts" id ="${obj.post_id}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
     $(".favourite-post").prepend(wrapper);
   }
 };
@@ -76,10 +76,12 @@ const renderMyFavs = function (posts) {
 const renderMyPosts = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
-    let wrapper = `<article class="posts" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
+    console.log("myposts", obj);
+    let wrapper = `<article class="posts" id ="${obj.post_id}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
     $(".my-post").prepend(wrapper);
   }
 }
+
 const createPostHtml = function (obj) {
   let title = obj.title;
   let url = obj.url;
@@ -91,7 +93,7 @@ const createPostHtml = function (obj) {
 
   let $html = `
   <header>
-    <h4>${title}</h4>
+    <h4 id = "post_titles">${title}</h4>
     <h5>By: ${name}</h5>
   </header>
   <body>
@@ -100,7 +102,7 @@ const createPostHtml = function (obj) {
   </body>
   <footer id= "timestamp">
     <span>Posted ${timeago.format(created)} </span>
-    <span class ="heart"></i><i class="fas fa-heart fa-2x"></i></span>
+    <span class ="heart"></i><i class="fas fa-heart fa-2x" name="hearts"></i></span>
   </footer>
 
   `;
@@ -118,36 +120,45 @@ $(document).ready(function () {
     .then(function (posts) {
       renderPost(posts);
     })
-    .then(function() {
+    .then(function () {
       $(".single_post").hide();
       $("#comments_div").hide();
 
-      $("form.single_post").submit(function(ev) {
+      //FAVORITE BUTTON
+      $(`[name="hearts"]`).click(function () {
+        console.log("clicked heart");
+        const postId = $(this).closest(".posts").attr("id");
+        $.post("/api/users/liked", { postId })
+          .then()
+      })
+
+
+      $("form.single_post").submit(function (ev) {
         ev.preventDefault();
         const comment = $(this).find("#new_comment").val();
         const rating = $(this).find("#rating").val();
         const postId = $(this).attr("id");
-        const dataObj = {comment, rating, postId}
+        const dataObj = { comment, rating, postId }
 
         $.post("/api/users/newcomment", dataObj)
-        .then(function(data){
-          renderComments(data)
-        })
+          .then(function (data) {
+            renderComments(data)
+          })
       })
 
-      $(".posts").click(function () {
+      $(".posts").find("#post_titles").click(function () {
         $(".single_post").hide();
         $("#comments_div").hide();
-        let target = $(this).attr('id');
+        let target = $(this).closest(".posts").attr('id');
 
         $(`form.single_post#${target}`).slideToggle();
         $("#comments_div").slideToggle();
         $('form.single_post').find('article').remove();
 
         $.post('/api/users/get_comments', { target })
-        .then(function(comments) {
-          renderComments(comments);
-        })
+          .then(function (comments) {
+            renderComments(comments);
+          })
       })
     });
 
@@ -165,6 +176,23 @@ $(document).ready(function () {
       .then(function (posts) {
         $(".text-post").empty();
         renderPost(posts);
+
+        //CLICK HANLDER for rendered searched posts
+        $(".posts").find("#post_titles").click(function () {
+          $(".single_post").hide();
+          $("#comments_div").hide();
+          let target = $(this).closest(".posts").attr('id');
+
+          $(`form.single_post#${target}`).slideToggle();
+          $("#comments_div").slideToggle();
+          $('form.single_post').find('article').remove();
+
+          $.post('/api/users/get_comments', { target })
+            .then(function (comments) {
+              renderComments(comments);
+            })
+        })
+
       })
   })
 
@@ -181,6 +209,30 @@ $(document).ready(function () {
         $.get('api/users/my_posts')
           .then(function (posts) {
             renderMyPosts(posts);
+
+            //CLICK HANLDER for mywall rendered posts
+            $(".posts").find("#post_titles").click(function () {
+              $(".single_post").hide();
+              $("#comments_div").hide();
+              let target = $(this).closest(".posts").attr('id');
+
+              $(`form.single_post#${target}`).slideToggle();
+              $("#comments_div").slideToggle();
+              $('form.single_post').find('article').remove();
+
+              $.post('/api/users/get_comments', { target })
+                .then(function (comments) {
+                  renderComments(comments);
+                })
+            })
+
+            //FAVORITE BUTTON
+            $(`[name="hearts"]`).click(function () {
+              console.log("clicked heart");
+              const postId = $(this).closest(".posts").attr("id");
+              $.post("/api/users/liked", { postId })
+                .then()
+            })
           })
       })
   })
@@ -203,12 +255,6 @@ $(document).ready(function () {
       })
 
   });
-
-  //FAVORITE BUTTON
-  $(".heart").click(function (ev) {
-    ev.preventDefault();
-    console.log("clicked the heart");
-  })
 
 });
 

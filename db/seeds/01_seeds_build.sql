@@ -20,19 +20,6 @@ INSERT INTO types (name) VALUES ('Documentation');
 INSERT INTO types (name) VALUES ('Resource Hub');
 --INSERT INTO types (name) VALUES ('Podcast);
 
---Favourites table seeds here
-INSERT INTO favourites (post_id, viewer_id) VALUES (1, 10);
-INSERT INTO favourites (post_id, viewer_id) VALUES (1, 7);
-INSERT INTO favourites (post_id, viewer_id) VALUES (3, 9);
-INSERT INTO favourites (post_id, viewer_id) VALUES (2, 6);
-INSERT INTO favourites (post_id, viewer_id) VALUES (5, 1);
-
-INSERT INTO favourites (post_id, viewer_id) VALUES (6, 5);
-INSERT INTO favourites (post_id, viewer_id) VALUES (8, 1);
-INSERT INTO favourites (post_id, viewer_id) VALUES (9, 8);
-INSERT INTO favourites (post_id, viewer_id) VALUES (5, 5);
-INSERT INTO favourites (post_id, viewer_id) VALUES (4, 1);
-
 --Posts table seeds here
 INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
 VALUES ('https://www.hackerrank.com/dashboard', 'HackerRank', 'description', 1, 6, 'Coding basics');
@@ -66,6 +53,19 @@ VALUES ('https://www.khanacademy.org/science/ap-college-environmental-science', 
 --VALUES ('https://www.theedublogger.com/prompts-student-writing/', 'Blog Publishing Tips', 'description', 5, 4, 'Writing prompts');
 --INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
 --VALUES ('https://www.britannica.com/quiz/parts-of-a-cell', 'Parts of a cell', 'description', 7, 3, 'Biology');
+
+--Favourites table seeds here
+INSERT INTO favourites (post_id, viewer_id) VALUES (1, 10);
+INSERT INTO favourites (post_id, viewer_id) VALUES (1, 7);
+INSERT INTO favourites (post_id, viewer_id) VALUES (3, 9);
+INSERT INTO favourites (post_id, viewer_id) VALUES (2, 6);
+INSERT INTO favourites (post_id, viewer_id) VALUES (5, 1);
+
+INSERT INTO favourites (post_id, viewer_id) VALUES (6, 5);
+INSERT INTO favourites (post_id, viewer_id) VALUES (8, 1);
+INSERT INTO favourites (post_id, viewer_id) VALUES (9, 8);
+INSERT INTO favourites (post_id, viewer_id) VALUES (5, 5);
+INSERT INTO favourites (post_id, viewer_id) VALUES (4, 1);
 
 --Comments table seeds here
 INSERT INTO comments (post_id, commenter_id, rating, comment_body)
