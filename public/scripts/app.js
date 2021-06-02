@@ -189,6 +189,16 @@ $(document).ready(function () {
             renderSingleComment(data);
           })
       })
+      
+      //will close single post view when clicking outside of the single post but will ignore when clicking on the post to open it
+      $(document).on('click', function(event) {
+        const container = $(".posts");
+        const container2 = $("#comments_div")
+        //checking to make sure neither of these two containers are the target of the click
+        if (!$(event.target).closest(container).length && !$(event.target).closest(container2).length) {
+            $('#comments_div').hide();
+        }
+    });
 
       $(".posts").find("#post_titles").click(function () {
         $(".single_post").hide();
