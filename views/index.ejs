@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="/styles/posts.css" type="text/css" />
   <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
   <link rel="stylesheet" href="/styles/single_post.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/footer.css" type="text/css" />
+
 
   <!-- External CSS -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -35,6 +37,9 @@
     integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;400&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
@@ -42,38 +47,37 @@
     <div class="href">
       <div class="home">
         <a href="/" id="pagename">
-          <span>UpSkill</span>
+          <span><b>Can</b>Academy.</span>
         </a>
       </div>
     </div>
     <div class="buttons-div">
-        <button class = "buttons" id=favourite>My Wall</button>
-          <button class = "buttons" id="search_button">Search</button>
-          <button class = "buttons" id="new-post">Compose Post</button>
+      <button class="buttons" id="favourite">My Wall</button>
+      <button class="buttons" id="search_button">Search</button>
+      <button class="buttons" id="new-post">Compose Post</button>
+      <hr />
     </div>
-    <div>
-      <div>Logged In As: <%= name%></div>
-      <button class="login" tabindex="0">
+    <div id = "login-div">
+      <span class="login-info"><%= name%>
         <i class="far fa-user-circle"></i>
+      </span>
+      <button class="btn draw-border">
         <span>LOGOUT</span>
       </button>
-      <button class="update-prof">
-        <span>UPDATE PROFILE</span>
+      <button class="btn update-prof">
+        <span>UPDATE</span>
       </button>
     </div>
   </nav>
   <div id="searchBoxContainer">
     <form class="search_form" id="search-form">
       <div class="label">
-        <label for="title">Title:</label>
-        <textarea id="title" name="title"></textarea>
+        <textarea id="title" name="title" placeholder="Search by Title..."></textarea>
       </div>
       <div class="label">
-        <label for="topic">Topic:</label>
-        <textarea id="topic" name="topic"></textarea>
+        <textarea id="topic" name="topic" placeholder="Search by Topic..."></textarea>
       </div>
-      <div class = "label">
-        <label for="type">Type:</label>
+      <div class="label">
         <select name="type" id="type">
           <option value=*>All</option>
           <option value="1">Video</option>
@@ -83,51 +87,47 @@
           <option value="5">Documentation</option>
           <option value="6">Resource Hub</option>
         </select>
-        </div>
-        <div class = "label">
-        <button type="Submit">Submit</button>
+      </div>
+      <div class="label">
+        <button id = "submit_search" type="Submit"><b>search</b></button>
       </div>
     </form>
   </div>
-  <div id = "edit-name">
-    <form id ="update-form">
-      <label for ="newname">Enter New Username: </label>
-      <textarea name = "newname" id = "username_text"></textarea>
+  <div id="edit-name">
+    <form id="update-form">
+      <textarea name="newname" id="username_text" placeholder="Enter New Name..."></textarea>
       <button type="submit">UPDATE</button>
     </form>
   </div>
   <header>
-    <div id = "comments_div"></div>
+    <div id="comments_div"></div>
     <div class="new_post_form">
-      <form action="/create" method="POST">
+      <form id = "create_form" action="/create" method="POST">
+        <div><h2 style="text-align: center;">New Post</h2></div>
         <div>
-          <label for="title">Title:</label>
-          <textarea name="title" id="new_title"></textarea>
+          <textarea name="title" id="new_title" placeholder="Title"></textarea>
         </div>
         <div>
-          <label for="topic">Topic:</label>
-          <textarea name="topic" id="new_topic"></textarea>
+          <textarea name="topic" id="new_topic" placeholder="topic"></textarea>
         </div>
         <div>
-          <label for="description">Description:</label>
-          <textarea name="description" id="new_description"></textarea>
+          <textarea name="description" id="new_description" placeholder="description"></textarea>
         </div>
         <div>
-          <label for="url">URL:</label>
-          <textarea name="url" id="new_url"></textarea>
+          <textarea name="url" id="new_url" placeholder="url"></textarea>
         </div>
-        <div>
-          <label for="type">Type:</label>
-            <select name="type" id="new_type">
-              <option value="1">Video</option>
-              <option value="2">Article</option>
-              <option value="3">Quiz</option>
-              <option value="4">Blog</option>
-              <option value="5">Documentation</option>
-              <option value="6">Resource Hub</option>
-            </select>
-          <button type="submit">Submit</button>
+        <div id="dropdown">
+          <select name="type" id="new_type">
+            <option value="1">Video</option>
+            <option value="2">Article</option>
+            <option value="3">Quiz</option>
+            <option value="4">Blog</option>
+            <option value="5">Documentation</option>
+            <option value="6">Resource Hub</option>
+          </select>
         </div>
+        <button type="submit">create post</button>
+        <hr/>
       </form>
     </div>
     <div class="text-post">
@@ -137,6 +137,21 @@
       <div class="favourite-post"></div>
     </div>
   </header>
+  <section id="footer">
+    <div class="container">
+      <div class="social">
+            <a href="/"><i class="fab fa-facebook"></i></a>
+            <a href="/"><i class="fab fa-twitter"></i></a>
+            <a href="/"><i class="fab fa-instagram"></i></a>
+            <a href="/"><i class="fab fa-google-plus"></i></a>
+            <a href="/"><i class="fa fa-envelope"></i></a>
+      </div>
+        <div class="footer-text">
+          <p><u><a href="/" style="color:black">Resource Wall</a></u> is a midterm project of LighthouseLab.</p>
+          <p class="h6">© All right Reversed.<a  href="/"style="color:black" >CanAcademy</a></p>
+      </div>
+    </div>
+  </section>
 </body>
 
 </html>

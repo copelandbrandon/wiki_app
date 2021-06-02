@@ -110,6 +110,7 @@ const createPostHtml = function (obj) {
 }
 
 $(document).ready(function () {
+
   $('#favourite').on('click');
   $(".new_post_form").hide();
   $("#searchBoxContainer").hide();
