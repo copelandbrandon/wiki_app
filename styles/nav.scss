@@ -127,3 +127,51 @@ textarea {
     outline: none;
   }
 }
+.login-info {
+  color:black;
+  // margin-left:;
+}
+
+// button style
+.login {
+  background-color: white;
+  border: 3px solid #ff0251;
+  color: black;
+  transition: .3s;
+}
+.login:hover {
+  animation: LOGOUT 1s infinite;
+  transition: .3s;
+}
+.update-prof {
+  background-color: white;
+  border: 3px solid #ff0251;
+  color: black;
+  transition: .3s;
+}
+.update-prof:hover {
+  animation: LOGOUT 1s infinite;
+  transition: .3s;
+}
+@keyframes LOGOUT{
+  0% {
+    transform: scale(1);
+  }
+  70% {
+    transform: scale(.9);
+  }
+    100% {
+    transform: scale(1);
+  }
+}
+@keyframes UPDATE{
+  0% {
+    transform: scale(1);
+  }
+  70% {
+    transform: scale(.9);
+  }
+    100% {
+    transform: scale(1);
+  }
+}

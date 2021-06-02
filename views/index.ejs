@@ -48,17 +48,18 @@
     </div>
     <div class="buttons-div">
         <button class = "buttons" id=favourite>My Wall</button>
-          <button class = "buttons" id="search_button">Search</button>
-          <button class = "buttons" id="new-post">Compose Post</button>
+        <button class = "buttons" id="search_button">Search</button>
+        <button class = "buttons" id="new-post">Compose Post</button>
     </div>
     <div>
-      <div>Logged In As: <%= name%></div>
-      <button class="login" tabindex="0">
+      <div class="login-info">Logged In As: <%= name%>
         <i class="far fa-user-circle"></i>
+      </div>
+      <button class="login btn">
         <span>LOGOUT</span>
       </button>
       <button class="update-prof">
-        <span>UPDATE PROFILE</span>
+        <span>UPDATE</span>
       </button>
     </div>
   </nav>
