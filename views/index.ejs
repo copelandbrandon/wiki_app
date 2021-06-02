@@ -52,9 +52,13 @@
           <button class = "buttons" id="new-post">Compose Post</button>
     </div>
     <div>
+      <div>Logged In As: <%= name%></div>
       <button class="login" tabindex="0">
         <i class="far fa-user-circle"></i>
-        <span>log in</span>
+        <span>LOGOUT</span>
+      </button>
+      <button class="update-prof">
+        <span>UPDATE PROFILE</span>
       </button>
     </div>
   </nav>
@@ -83,6 +87,13 @@
         <div class = "label">
         <button type="Submit">Submit</button>
       </div>
+    </form>
+  </div>
+  <div id = "edit-name">
+    <form id ="update-form">
+      <label for ="newname">Enter New Username: </label>
+      <textarea name = "newname" id = "username_text"></textarea>
+      <button type="submit">UPDATE</button>
     </form>
   </div>
   <header>

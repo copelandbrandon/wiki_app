@@ -147,8 +147,6 @@ module.exports = (db) => {
   router.post("/liked", (req, res) => {
     let postId = req.body.postId;
     let user = req.session.userId;
-    let ar = [];
-    ar.push(postId);
 
     db.query(`
     SELECT * FROM favourites WHERE post_id = ${postId} AND viewer_id = ${user};`)
@@ -204,5 +202,15 @@ module.exports = (db) => {
       });
   })
 
+  router.post("/update-name", (req, res) => {
+    const newName = req.body.newName;
+    const userId = req.session.userId;
+
+    db.query(`
+    UPDATE users SET name = '${newName}' WHERE id = ${userId};
+    `).then(function(newName) {
+      res.json({newName});
+    })
+  })
   return router;
 };

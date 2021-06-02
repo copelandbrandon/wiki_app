@@ -38,6 +38,7 @@ nav {
   margin-left: 20%;
   margin-right: 20%;
   border-radius:0px 0px 30px 30px;
+
   .label{
     vertical-align: center;
   }
@@ -102,4 +103,27 @@ textarea {
 
 #short_source{
   text-decoration: none;
+}
+
+#edit-name {
+  margin-left: 33%;
+  margin-right: 33%;
+  right: 0px;
+  font-size: small;
+  height: 60px;
+  width: 525px;
+  padding: 6px;
+  background-color: black;
+
+  .label{
+    vertical-align: center;
+  }
+
+  textarea {
+    border-radius: 25px;
+    font-size: small;
+    resize: none;
+    overflow: hidden;
+    outline: none;
+  }
 }

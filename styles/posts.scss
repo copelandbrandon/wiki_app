@@ -22,10 +22,13 @@
   height: 280px;
   padding: 5px;
   background-position: center;
-  background-size: auto;
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+
+
 }
 
 h4 {
@@ -80,3 +83,5 @@ a {
 .fa-heart:hover {
   color:red;
 }
+
+
