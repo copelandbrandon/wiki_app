@@ -4,14 +4,10 @@ const images = {
   3: "../images/quiz_symbol.png",
   4: "../images/blog_symbol.png",
   5: "../images/documentation_symbol.png",
-  6: "../images/resource_hub_symbol.png"
+  6: "../images/resource_hub_symbol.png",
+  7: "../images/podcast_symbol.png"
 }
-// an escape function referenced from tweeter app to sanitize inputs
-const escape = function(str) {
-  let paragraph = document.createElement("p");
-  paragraph.appendChild(document.createTextNode(str));
-  return paragraph.innerHTML;
-};
+
 
 //will place posts created by createPostHTML into the html for a single post view
 const renderPost = function (posts) {
@@ -22,12 +18,12 @@ const renderPost = function (posts) {
     let commentDiv = `
       <form class = "single_post" id = "${obj.post_id}">
       <span id = "post_info">
-      <h4>${escape(obj.title)}</h4>
-      <h6>By: ${escape(obj.poster_name)}</h6>
-      <h6>${escape(obj.topic)}</h6>
-      <h6>${escape(obj.name)}</h6>
-      <h6>${escape(obj.url)}</h6>
-      <h6>${escape(obj.description)}</h6>
+      <h4>${obj.title}</h4>
+      <h6>By: ${obj.poster_name}</h6>
+      <h6>${obj.topic}</h6>
+      <h6>${obj.name}</h6>
+      <h6>${obj.url}</h6>
+      <h6>${obj.description}</h6>
       </span>
       <textarea id="new_comment">Something</textarea>
       <div class= "submitComment" >
@@ -47,6 +43,7 @@ const renderPost = function (posts) {
   }
 };
 
+//will append comments in correct order to intermediate div
 const renderComments = function (comments) {
   let $comment = $(`<div class="composed-comment"></div>`);
   for (const comment of comments.posts) {
@@ -58,10 +55,10 @@ const renderComments = function (comments) {
     <article class ='comment_article'>
     <header>
        <div>
-          <span> By: ${escape(username)}</span>
+          <span> By: ${username}</span>
        </div>
     </header>
-       <p>${escape(comment_body)}</p>
+       <p>${comment_body}</p>
     <footer>
        <div>${timeago.format(time)}</div>
        <div>${rating}</div>
@@ -69,38 +66,45 @@ const renderComments = function (comments) {
   </article>
   `);
   $comment.append($commentArticle);
-
+//once last comment is reached by loop append intermediate div to the form
   if (comment === comments.posts[comments.posts.length - 1]) {
     $(`form#${comment.post_id}`).append($comment);
   }
 }
-}
+};
 
+// will create the html and prepend a comment when a user adds one
 const renderSingleComment = function(comment) {
   let $comment = $(`<div class="composed-comment"></div>`)
   let comment_body = comment.posts[0].comment_body;
   let username = comment.posts[0].username;
   let rating = comment.posts[0].rating;
   let time = comment.posts[0].created_at;
-  console.log(comment.posts[0].post_id);
   let $commentArticle = $(`
     <article class ='comment_article'>
     <header>
        <div>
-          <span> By: ${escape(username)}</span>
+          <span> By: ${username}</span>
        </div>
     </header>
-       <p>${escape(comment_body)}</p>
+       <p>${comment_body}</p>
     <footer>
        <div>${timeago.format(time)}</div>
-       <div>${escape(rating)}</div>
+       <div>${rating}</div>
     </footer>
   </article>
   `);
-  $(`form#${comment.posts[0].post_id}`).append($comment)
-  $comment.prepend($commentArticle);
+
+  //if the div doesnt already exist, creates it and appends new comment to it. otherwise prepends to existing
+  if ($(`form#${comment.posts[0].post_id}`).find(`div.composed-comment`).length === 0) {
+    $comment.prepend($commentArticle);
+    $(`form#${comment.posts[0].post_id}`).append($comment);
+  } else {
+    $(`div.composed-comment`).prepend($commentArticle);
+  }
 };
 
+//will prepend all favourited posts into favourites section of my wall
 const renderMyFavs = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
@@ -109,6 +113,7 @@ const renderMyFavs = function (posts) {
   }
 };
 
+//will prepend all user created posts into my posts section of my wall
 const renderMyPosts = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
@@ -117,7 +122,8 @@ const renderMyPosts = function (posts) {
     $(".my-post").prepend(wrapper);
   }
 }
-//will dynamically creat html elements for posts
+
+//will dynamically create html elements for posts
 const createPostHtml = function (obj) {
   let title = obj.title;
   let url = obj.url;
@@ -129,12 +135,12 @@ const createPostHtml = function (obj) {
 
   let $html = `
   <header>
-    <h4 id = "post_titles">${escape(title)}</h4>
-    <h5>By: ${escape(name)}</h5>
+    <h4 id = "post_titles">${title}</h4>
+    <h5>By: ${name}</h5>
   </header>
   <body>
-    <h6>${escape(description)}</h6>
-    <div id ="source_button"><a href="${escape(url)}" id="short_source">Go To Source</a></div>
+    <h6>${description}</h6>
+    <div id ="source_button"><a href="${url}" id="short_source">Go To Source</a></div>
   </body>
   <footer id= "timestamp">
     <span>Posted ${timeago.format(created)} </span>
@@ -145,6 +151,7 @@ const createPostHtml = function (obj) {
   return $html;
 }
 
+//event handlers and AJAX calls
 $(document).ready(function () {
   $('#favourite').on('click');
   $(".new_post_form").hide();

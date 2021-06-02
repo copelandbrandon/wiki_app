@@ -17,23 +17,6 @@ VALUES ('AliceCarrero', 'aCarrero@gmail.com', 'password'),
 ('DanielDevito', 'danielSan@gmail.com', 'password');
 
 --Types table seeds here
-<<<<<<< HEAD
-INSERT INTO types (name) VALUES ('Video');
-INSERT INTO types (name) VALUES ('Article');
-INSERT INTO types (name) VALUES ('Quiz');
-INSERT INTO types (name) VALUES ('Blog');
-INSERT INTO types (name) VALUES ('Documentation');
-INSERT INTO types (name) VALUES ('Resource Hub');
---INSERT INTO types (name) VALUES ('Podcast);
-
---Posts table seeds here
-INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
-VALUES ('https://www.hackerrank.com/dashboard', 'HackerRank', 'description', 1, 6, 'Coding basics');
-INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
-VALUES ('https://developer.mozilla.org/en-US/', 'MDN', 'description', 2, 5, 'Coding basics');
-INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
-VALUES ('https://nodejs.org/en/docs/', 'Node Documentation', 'description', 3, 5, 'Node');
-=======
 INSERT INTO types (name)
 VALUES ('Video'),
 ('Article'),
@@ -45,7 +28,6 @@ VALUES ('Video'),
 
 
 --Posts table seeds here contains 40 posts currently
->>>>>>> brandon/schema
 INSERT INTO posts (url, title, description, poster_id, resource_type_id, topic)
 VALUES ('https://www.hackerrank.com/dashboard', 'HackerRank', 'Hacker rank is a great resource hub for developers looking to find a job!', 1, 6, 'Coding basics'),
 ('https://developer.mozilla.org/en-US/', 'MDN', 'A page that web developers should probably bookmark.', 2, 5, 'Coding basics'),
