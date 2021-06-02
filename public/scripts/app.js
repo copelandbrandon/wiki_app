@@ -113,6 +113,8 @@ $(document).ready(function () {
   $('#favourite').on('click');
   $(".new_post_form").hide();
   $("#searchBoxContainer").hide();
+  $('.vl').hide();
+  $('.my-wall-title').hide();
   // $("#edit-name").hide();
 
   $.ajax('/api/users', {
@@ -216,8 +218,8 @@ $(document).ready(function () {
   $('#favourite').click(function () {
     $(".text-post").hide();
     $('#favourite').off('click');
-
-
+    $('.vl').show();
+    $('.my-wall-title').show();
     $.get('/api/users/favourites')
       .then(function (posts) {
         renderMyFavs(posts);
@@ -236,7 +238,7 @@ $(document).ready(function () {
               $(`form.single_post#${target}`).slideToggle();
               $("#comments_div").slideToggle();
               $('form.single_post').find('article').remove();
-
+              $(".fa-heart").css('backgroundcolor', 'red');
               $.post('/api/users/get_comments', { target })
                 .then(function (comments) {
                   renderComments(comments);

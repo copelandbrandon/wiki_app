@@ -66,6 +66,7 @@ h6 {
   flex-wrap: wrap;
   width: 50%;
   justify-content: space-around;
+  margin-left: 350px;
 }
 
 .my-post {
@@ -74,6 +75,7 @@ h6 {
   flex-wrap: wrap;
   width: 50%;
   justify-content: space-around;
+  margin-left: 100px;
 }
 
 a {
@@ -83,5 +85,30 @@ a {
 .fa-heart:hover {
   color:red;
 }
+
+.vl {
+  border-left: 6px solid green;
+  height: 100%;
+  margin-top:210px;
+  position: absolute;
+  left: 50%;
+  margin-left: -3px;
+  top: 0;
+}
+
+.my-wall-title {
+  margin-top:-20px;
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  width: 100%;
+  font-size: 36px;
+  justify-content: space-around;
+}
+
+.posts:hover {
+  box-shadow: 7px 10px rgb(177, 174, 174);
+}
+
 
 
