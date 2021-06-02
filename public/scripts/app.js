@@ -42,13 +42,14 @@ const renderPost = function (posts) {
 };
 
 const renderComments = function (comments) {
+  let $comment = $(`<div class="composed-comment"></div>`);
   for (const comment of comments.posts) {
     let comment_body = comment.comment_body;
     let username = comment.username;
     let rating = comment.rating;
     let time = comment.created_at;
-    let commentArticle = `
-    <article id ='comment_article'>
+    let $commentArticle = $(`
+    <article class ='comment_article'>
     <header>
        <div>
           <span> By: ${username}</span>
@@ -60,10 +61,36 @@ const renderComments = function (comments) {
        <div>${rating}</div>
     </footer>
   </article>
-  `
-    $(`form#${comment.post_id}`).append(commentArticle);
+  `);
+  $comment.append($commentArticle);
+
+  if (comment === comments.posts[comments.posts.length - 1]) {
+    $(`form#${comment.post_id}`).append($comment);
   }
 }
+}
+
+const renderSingleComment = function(comment) {
+  let comment_body = comment.posts[0].comment_body;
+  let username = comment.posts[0].username;
+  let rating = comment.posts[0].rating;
+  let time = comment.posts[0].created_at;
+  let $commentArticle = $(`
+    <article class ='comment_article'>
+    <header>
+       <div>
+          <span> By: ${username}</span>
+       </div>
+    </header>
+       <p>${comment_body}</p>
+    <footer>
+       <div>${timeago.format(time)}</div>
+       <div>${rating}</div>
+    </footer>
+  </article>
+  `);
+  $(`div.composed-comment`).prepend($commentArticle);
+};
 
 const renderMyFavs = function (posts) {
   for (const obj of posts.posts) {
@@ -143,7 +170,7 @@ $(document).ready(function () {
 
         $.post("/api/users/newcomment", dataObj)
           .then(function (data) {
-            renderComments(data)
+            renderSingleComment(data);
           })
       })
 
