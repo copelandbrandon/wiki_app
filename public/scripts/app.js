@@ -157,6 +157,8 @@ $(document).ready(function () {
   $('#favourite').on('click');
   $(".new_post_form").hide();
   $("#searchBoxContainer").hide();
+  $(".vl").hide();
+  $(".mywall-info").hide();
   // $("#edit-name").hide();
 
   $.ajax('/api/users', {
@@ -190,7 +192,7 @@ $(document).ready(function () {
             renderSingleComment(data);
           })
       })
-      
+
       //will close single post view when clicking outside of the single post but will ignore when clicking on the post to open it
       $(document).on('click', function(event) {
         const container = $(".posts");
@@ -268,6 +270,8 @@ $(document).ready(function () {
   })
 
   $('#favourite').click(function () {
+    $(".vl").show();
+    $(".mywall-info").show();
     $(".text-post").hide();
     $('#favourite').off('click');
 
