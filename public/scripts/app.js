@@ -245,6 +245,7 @@ $(document).ready(function () {
     $("#favourite").on('click', fetchWall);
   })
 
+  //INITIAL render from database
   $.ajax('/api/users', {
     method: "GET",
   })
@@ -274,7 +275,7 @@ $(document).ready(function () {
           })
       })
 
-
+      //SUBMITTING A COMMENT
       $("form.single_post").submit(function (ev) {
         ev.preventDefault();
         const $commentClear = $(this).find("#new_comment");
@@ -290,7 +291,7 @@ $(document).ready(function () {
           })
       })
 
-      //will close single post view when clicking outside of the single post but will ignore when clicking on the post to open it
+      //OFF-CLICK HANDLER
       $(document).on('click', function (event) {
         const container = $(".posts");
         const container2 = $("#comments_div")
@@ -300,6 +301,7 @@ $(document).ready(function () {
         }
       });
 
+      //LOCATES the right post to show when clicking on single posts
       $(".posts").find("#post_titles").click(function () {
         $(".single_post").hide();
         $("#comments_div").hide();
@@ -316,26 +318,28 @@ $(document).ready(function () {
       })
     });
 
+  //TOGGLE SEARCH BAR
   $("#search_button").click(function () {
     $("#searchBoxContainer").slideToggle();
     $("#edit-name").slideUp();
     $("html, body").animate({ scrollTop: 0 }, "slow");
   })
 
+  //SEARCH FORM SUBMIT
   $(`#search-form`).submit(function (ev) {
     ev.preventDefault();
-
 
     const title = $('#title').val();
     const topic = $('#topic').val();
     const type = $('#type').val();
     const dataObj = { title, topic, type };
+
     $.post('/api/users/search', dataObj)
       .then(function (posts) {
         $(".text-post").empty();
         renderPost(posts);
 
-        //FAVORITE BUTTON
+        //FAVORITE BUTTON RENDER
         $(`[name="hearts"]`).off('click');
         $(`[name="hearts"]`).click(function () {
           let $source = $(this);
@@ -396,6 +400,7 @@ $(document).ready(function () {
     $(".new_post_form").slideToggle();
   });
 
+  //SUBMITING NEW POST
   $(".new_post_form").submit(function (ev) {
     ev.preventDefault();
     const $newPostForm = $(this);
@@ -424,23 +429,23 @@ $(document).ready(function () {
         renderPost(post);
       }).then(function () {
 
-              //FAVORITE BUTTON
-              $(`[name="hearts"]`).off('click');
-              $(`[name="hearts"]`).click(function () {
-                let $source = $(this);
-                const postId = $(this).closest(".posts").attr("id");
-                $.post("/api/users/liked", { postId })
-                  .then(function (post) {
-                    if (post.counter === 0) {
-                      let zeroCounter = '0';
-                      return zeroCounter;
-                    }
-                    return `${post.counter.num_favs}`;
-                  })
-                  .then(function (counterVal) {
-                    $source.siblings('.favs-counter').text(counterVal);
-                  })
-              })
+        //FAVORITE BUTTON RENDER
+        $(`[name="hearts"]`).off('click');
+        $(`[name="hearts"]`).click(function () {
+          let $source = $(this);
+          const postId = $(this).closest(".posts").attr("id");
+          $.post("/api/users/liked", { postId })
+            .then(function (post) {
+              if (post.counter === 0) {
+                let zeroCounter = '0';
+                return zeroCounter;
+              }
+              return `${post.counter.num_favs}`;
+            })
+            .then(function (counterVal) {
+              $source.siblings('.favs-counter').text(counterVal);
+            })
+        })
       })
 
   });
@@ -455,9 +460,11 @@ $(document).ready(function () {
   $("#update-form").submit(function (ev) {
     ev.preventDefault();
     const newName = $("#username_text").val();
+
     $.post("/api/users/update-name", { newName })
       .then(function () {
-        location.reload();
+        $("#logged_user").text(`${newName}`);
+        $("#edit-name").slideToggle();
       })
   })
 
