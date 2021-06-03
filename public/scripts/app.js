@@ -96,10 +96,12 @@ const renderSingleComment = function(comment) {
   `);
 
   //if the div doesnt already exist, creates it and appends new comment to it. otherwise prepends to existing
-  if ($(`form#${comment.posts[0].post_id}`).find(`div.composed-comment`).length === 0) {
+  if ($(`form#${comment.posts[0].post_id}`).find(`div.composed-comment`).length == 0) {
+    console.log("reached if", $(comment.posts[0].post_id).find(`div.composed-comment`).length);
     $comment.prepend($commentArticle);
     $(`form#${comment.posts[0].post_id}`).append($comment);
   } else {
+    console.log('reached else', $(comment.posts[0].post_id).find(`div.composed-comment`).length);
     $(`div.composed-comment`).prepend($commentArticle);
   }
 };
@@ -132,6 +134,7 @@ const createPostHtml = function (obj) {
   let topic = obj.topic;
   let created = obj.created_at;
   let name = obj.poster_name;
+  let fav_count = obj.num_favs;
 
   let $html = `
   <header>
@@ -144,7 +147,7 @@ const createPostHtml = function (obj) {
   </body>
   <footer id= "timestamp">
     <span>Posted ${timeago.format(created)} </span>
-    <span class ="heart"></i><i class="fas fa-heart fa-2x" name="hearts"></i></span>
+    <span class ="heart">${fav_count}<i class="fas fa-heart fa-2x" name="hearts"></i></span>
   </footer>
 
   `;
@@ -269,7 +272,10 @@ $(document).ready(function () {
   $('#favourite').click(function () {
     $(".text-post").hide();
     $('#favourite').off('click');
-
+    $.get(`/api/users/my_posts`)
+      .then(function (data) {
+        $.post(`api/users/my_posts`, data)
+      })
 
     $.get('/api/users/favourites')
       .then(function (posts) {

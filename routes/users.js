@@ -5,9 +5,11 @@ const router = express.Router();
 module.exports = (db) => {
   router.get("/", (req, res) => {
 
-    db.query(`SELECT posts.*, posts.id as post_id, users.name AS poster_name, types.*
+    db.query(`SELECT posts.*, posts.id as post_id, users.name AS poster_name, types.*, count(favourites.*) as num_favs
     FROM posts INNER JOIN users ON users.id = poster_id
     INNER JOIN types ON resource_type_id = types.id
+    LEFT JOIN favourites ON posts.id = post_id
+    GROUP BY posts.id, users.name, types.id
     ORDER BY created_at;`)
       .then(data => {
         const posts = data.rows;
@@ -44,7 +46,11 @@ module.exports = (db) => {
     let topic = req.body.topic;
     let type = req.body.type;
     let title = req.body.title;
-    let queryString = `SELECT posts.*, posts.id as post_id, users.name AS poster_name, types.* FROM posts INNER JOIN users ON users.id = poster_id INNER JOIN types ON resource_type_id = types.id`;
+    let queryString = `SELECT posts.*, posts.id as post_id, users.name AS poster_name, types.*, COUNT(favourites.*) as num_favs
+    FROM posts
+    INNER JOIN users ON users.id = poster_id
+    INNER JOIN types ON resource_type_id = types.id
+    LEFT JOIN favourites ON posts.id = favourites.post_id`;
     let queryParams = [];
 
     if (title !== "") {
@@ -70,7 +76,8 @@ module.exports = (db) => {
       }
     }
 
-    queryString += ";";
+    queryString += ` GROUP BY posts.id, users.name, types.id
+    ORDER BY posts.created_at;`;
 
     db.query(queryString, queryParams)
       .then(data => {
@@ -87,7 +94,10 @@ module.exports = (db) => {
   router.get("/favourites", (req, res) => {
     let userId = req.session.userId;
     db.query(`
-    SELECT posts.*, favourites.*,  users.name as poster_name FROM users JOIN posts on users.id = poster_id INNER JOIN favourites ON post_id = posts.id WHERE viewer_id = $1;
+    WITH numFavourite as (SELECT COUNT(favourites.*) as num_favs, posts.*, posts.id as post_id, users.name as poster_name FROM favourites LEFT JOIN posts ON posts.id = post_id LEFT JOIN users ON users.id = poster_id
+GROUP BY posts.id, users.name)
+
+SELECT numFavourite.*, favourites.* FROM numFavourite LEFT JOIN favourites ON numFavourite.id = favourites.post_id WHERE viewer_id = $1;
     `, [userId])
       .then(data => {
         const posts = data.rows;
@@ -103,7 +113,13 @@ module.exports = (db) => {
 
   router.get("/my_posts", (req, res) => {
     let userId = req.session.userId;
-    db.query(`SELECT posts.*, posts.id AS post_id, users.name as poster_name FROM posts INNER JOIN users ON users.id = poster_id WHERE poster_id = $1`, [userId])
+    db.query(`SELECT COUNT(favourites.*) as num_favs, posts.*, posts.id as post_id, users.name as poster_name
+    FROM favourites
+    RIGHT JOIN posts ON posts.id = post_id
+    INNER JOIN users ON users.id = posts.poster_id
+    WHERE posts.poster_id = $1
+    GROUP BY posts.id, users.name
+    ORDER BY posts.created_at;`, [userId])
       .then(data => {
         const posts = data.rows;
         res.json({ posts })
