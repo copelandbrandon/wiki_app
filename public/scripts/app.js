@@ -428,7 +428,8 @@ $(document).ready(function () {
 
     $.post("/api/users/update-name", { newName })
       .then(function () {
-        location.reload();
+        $("#logged_user").text(`${newName}`);
+        $("#edit-name").slideToggle();
       });
   });
 });
