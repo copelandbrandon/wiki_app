@@ -21,8 +21,6 @@ module.exports = (db) => {
   });
 
   router.post("/get_comments", (req, res) => {
-    // let postTitle = req.body.target.split("_")[0];
-    // let posterName = req.body.target.split("_")[1];
     const postId = req.body.target;
     db.query(`SELECT comments.*, users.name as username FROM comments
     INNER JOIN posts ON posts.id = post_id

@@ -1,18 +1,23 @@
 #comments_div {
-  background-color: yellowgreen;
-  width: 100vw;
-  height:500px;
+  background-color: white;
+  border: 2px solid black;
+
+  width: auto;
+  height:600px;
   position: fixed;
-  margin-top:100px;
+  margin-top: 40px;
   width: 80%;
   margin-left:10%;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  border-radius: 25px;
 }
 
 
 form.single_post {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-direction: column;
 }
 
@@ -22,9 +27,8 @@ form.single_post {
 
 #new_comment {
   border:none;
-  border-bottom: 3px solid black;
   width: 100%;
-  background-color: yellowgreen;
+  background-color: white;
   resize: none;
   font-size: 12px;
 }
@@ -37,15 +41,125 @@ footer {
 }
 
 #comment_article {
-  border: 2px solid black;
   height:80px;
   font-size:12px;
 }
 
 #post_info {
-  border: 2px solid black;
   height: auto;
+  width: auto;
   text-align: center;
+  padding: 10px;
 }
 
+#split hr{
+  margin-top: 10px;
+  background-color: rgb(155, 155, 155);
+  height: 0.20rem;
+  width: 70%;
+}
+.single_post{
+  background-color: white;
+  font-family: 'Roboto Mono, monospace';
 
+  hr {
+    background-color: rgb(255, 255, 255);
+    height: 0.1rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+  }
+
+  a:hover ~ hr{
+    transition: 0.3s;
+    background-color: black;
+  }
+
+  h4{
+    font-size: 50px;
+    color: black;
+    margin-bottom: -60px;
+  }
+
+  h6{
+    font-size: 30px;
+    margin-bottom: 5px;
+    color: black;
+  }
+
+  #description_h{
+    margin-bottom: 15px;
+    margin-top: 10px;
+    color: rgb(133, 132, 132);
+    font-weight: 10;
+  }
+
+  a{
+    color: black;
+    text-decoration: none;
+  }
+
+  h7{
+    margin-left: 40px;
+    margin-right: 40px;
+    height: 40px;
+  }
+}
+
+textarea#new_comment {
+width: auto;
+outline: none;
+font-size: 30px;
+height: max-content;
+text-align: center;
+}
+
+#rating {
+  width: 250px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.submitComment{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  margin-top: -35px;
+
+  button{
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1.5;
+    font: 600 1.2rem 'Roboto Slab', sans-serif;
+    padding: 0.5em 1.3em;
+    letter-spacing: 0.05rem;
+    &:focus { outline: 2px dotted #55D7DC; }
+  }
+  button:hover{
+    color: rgb(206, 4, 4);
+  }
+}
+
+.comment_article{
+  border: solid black;
+  margin: 10px;
+  padding: 15px;
+  border-radius: 15px;
+
+  header {
+    color: black;
+  }
+
+  div{
+    font-size: small;
+
+  }
+
+  footer {
+    #rating_number{
+      font-size: 30px;
+    }
+  }
+}

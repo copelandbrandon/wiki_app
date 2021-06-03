@@ -20,21 +20,22 @@ const renderPost = function (posts) {
       <span id = "post_info">
       <h4>${obj.title}</h4>
       <h6>By: ${obj.poster_name}</h6>
-      <h6>${obj.topic}</h6>
-      <h6>${obj.name}</h6>
-      <h6>${obj.url}</h6>
-      <h6>${obj.description}</h6>
+      <div><span>${obj.topic} / </span><span>${obj.name}</span></div>
+      <h6 id="description_h">${obj.description}</h6>
+      <a href="${obj.url}">GO TO SOURCE</a>
+      <hr/>
+      <div id="split"><hr/></div>
       </span>
-      <textarea id="new_comment">Something</textarea>
+      <textarea id="new_comment" placeholder="enter a comment..."></textarea>
       <div class= "submitComment" >
-      <button type="submit">Submit</button>
       <select name="rating" id="rating">
         <option value="1">VeryUnhelpful</option>
-       <option value="2">Unhelpful</option>
-       <option value="3" selected="selected">Adequate</option>
-       <option value="4">Helpful</option>
-       <option value="5">VeryHelpful</option>
+        <option value="2">Unhelpful</option>
+        <option value="3" selected="selected">Adequate</option>
+        <option value="4">Helpful</option>
+        <option value="5">VeryHelpful</option>
        </select>
+       <button type="submit">SUBMIT</button>
        </div>
       </form>
     `
@@ -54,27 +55,27 @@ const renderComments = function (comments) {
     let $commentArticle = $(`
     <article class ='comment_article'>
     <header>
-       <div>
-          <span> By: ${username}</span>
-       </div>
+    <p>${comment_body}</p>
     </header>
-       <p>${comment_body}</p>
+    <div>
+      <span> By: ${username}</span>
+    </div>
     <footer>
        <div>${timeago.format(time)}</div>
-       <div>${rating}</div>
+       <div id="rating_number">Rating: ${rating}</div>
     </footer>
   </article>
   `);
-  $comment.append($commentArticle);
-//once last comment is reached by loop append intermediate div to the form
-  if (comment === comments.posts[comments.posts.length - 1]) {
-    $(`form#${comment.post_id}`).append($comment);
+    $comment.append($commentArticle);
+    //once last comment is reached by loop append intermediate div to the form
+    if (comment === comments.posts[comments.posts.length - 1]) {
+      $(`form#${comment.post_id}`).append($comment);
+    }
   }
-}
 };
 
 // will create the html and prepend a comment when a user adds one
-const renderSingleComment = function(comment) {
+const renderSingleComment = function (comment) {
   let $comment = $(`<div class="composed-comment"></div>`)
   let comment_body = comment.posts[0].comment_body;
   let username = comment.posts[0].username;
@@ -151,15 +152,54 @@ const createPostHtml = function (obj) {
   return $html;
 }
 
-//event handlers and AJAX calls
-$(document).ready(function () {
+const fetchWall = () => {
+  $(".text-post").slideUp();
+  $('#favourite').off('click');
 
+  $.get('/api/users/favourites')
+    .then(function (posts) {
+      renderMyFavs(posts);
+    })
+    .then(function () {
+      $.get('api/users/my_posts')
+        .then(function (posts) {
+          renderMyPosts(posts);
+          $(".my-wall").slideDown();
+
+          //CLICK HANLDER for mywall rendered posts
+          $(".posts").find("#post_titles").click(function () {
+            $(".single_post").hide();
+            $("#comments_div").hide();
+            let target = $(this).closest(".posts").attr('id');
+
+            $(`form.single_post#${target}`).slideToggle();
+            $("#comments_div").slideToggle();
+            $('form.single_post').find('article').remove();
+
+            $.post('/api/users/get_comments', { target })
+              .then(function (comments) {
+                renderComments(comments);
+              })
+          })
+
+          //FAVORITE BUTTON
+          $(`[name="hearts"]`).click(function () {
+            console.log("clicked heart");
+            const postId = $(this).closest(".posts").attr("id");
+            $.post("/api/users/liked", { postId })
+              .then()
+          })
+        })
+    })
+}
+
+$(document).ready(function () {
+  //HIDES all necessary elements on load
   $('#favourite').on('click');
   $(".new_post_form").hide();
   $("#searchBoxContainer").hide();
   $(".vl").hide();
   $(".mywall-info").hide();
-  // $("#edit-name").hide();
 
   $.ajax('/api/users', {
     method: "GET",
@@ -194,14 +234,14 @@ $(document).ready(function () {
       })
 
       //will close single post view when clicking outside of the single post but will ignore when clicking on the post to open it
-      $(document).on('click', function(event) {
+      $(document).on('click', function (event) {
         const container = $(".posts");
         const container2 = $("#comments_div")
         //checking to make sure neither of these two containers are the target of the click
         if (!$(event.target).closest(container).length && !$(event.target).closest(container2).length) {
-            $('#comments_div').hide();
+          $('#comments_div').slideUp();
         }
-    });
+      });
 
       $(".posts").find("#post_titles").click(function () {
         $(".single_post").hide();
@@ -221,6 +261,8 @@ $(document).ready(function () {
 
   $("#search_button").click(function () {
     $("#searchBoxContainer").slideToggle();
+    $("#edit-name").slideUp();
+    $("html, body").animate({ scrollTop: 0 }, "slow");
   })
 
   $(`#search-form`).submit(function (ev) {
@@ -269,47 +311,11 @@ $(document).ready(function () {
       })
   })
 
+  //MY WALL when clicked
   $('#favourite').click(function () {
     $(".vl").show();
     $(".mywall-info").show();
-    $(".text-post").hide();
-    $('#favourite').off('click');
-
-
-    $.get('/api/users/favourites')
-      .then(function (posts) {
-        renderMyFavs(posts);
-      })
-      .then(function () {
-        $.get('api/users/my_posts')
-          .then(function (posts) {
-            renderMyPosts(posts);
-
-            //CLICK HANLDER for mywall rendered posts
-            $(".posts").find("#post_titles").click(function () {
-              $(".single_post").hide();
-              $("#comments_div").hide();
-              let target = $(this).closest(".posts").attr('id');
-
-              $(`form.single_post#${target}`).slideToggle();
-              $("#comments_div").slideToggle();
-              $('form.single_post').find('article').remove();
-
-              $.post('/api/users/get_comments', { target })
-                .then(function (comments) {
-                  renderComments(comments);
-                })
-            })
-
-            //FAVORITE BUTTON
-            $(`[name="hearts"]`).click(function () {
-              console.log("clicked heart");
-              const postId = $(this).closest(".posts").attr("id");
-              $.post("/api/users/liked", { postId })
-                .then()
-            })
-          })
-      })
+    fetchWall();
   })
 
   $("#new-post").click(function () {
@@ -331,14 +337,20 @@ $(document).ready(function () {
 
   });
 
+  //OPENING UPDATE FORM
+  $("#update-button").click(function () {
+    $("#searchBoxContainer").slideUp();
+    $("#edit-name").slideToggle();
+  })
+
   //SUBMITTING UPDATE FORM
-  $("#update-form").submit(function(ev) {
+  $("#update-form").submit(function (ev) {
     ev.preventDefault();
     const newName = $("#username_text").val();
-    $.post("/api/users/update-name", {newName})
-    .then(function() {
-      location.reload();
-    })
+    $.post("/api/users/update-name", { newName })
+      .then(function () {
+        location.reload();
+      })
   })
 
 });

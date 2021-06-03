@@ -56,11 +56,13 @@ nav {
   }
 
   textarea {
-    border-radius: 25px;
-    font-size: small;
+    border: none;
+    border-bottom: 1px black solid;
+    font-size: medium;
     resize: none;
     overflow: hidden;
     outline: none;
+    background-color:rgb(228, 228, 228);
   }
 
   select{
@@ -94,6 +96,10 @@ nav {
   justify-content: space-around;
 }
 
+.buttons-div{
+  margin-left: auto;
+  margin-right: auto;
+}
 .buttons {
   height: 30px;
   width: 150px;
@@ -134,6 +140,9 @@ textarea {
 .new_post_form {
   background-color: rgb(241, 241, 241);
   border-radius: 20px;
+  border: 2px solid black;
+
+  box-shadow: 3px 3px 15px rgb(65, 65, 65);;
   padding: 20px;
   height: 700px;
   width: auto;
@@ -163,6 +172,7 @@ textarea {
    width: fit-content;
    margin-left: auto;
    margin-right: auto;
+   font-family:'Roboto Slab', sans-serif ;
  }
 
   hr{
@@ -242,6 +252,7 @@ textarea {
 #edit-name {
   margin-left: auto;
   margin-right: auto;
+  margin-top: 80px;
   right: 0px;
   font-size: small;
   height: max-content;
@@ -252,6 +263,7 @@ textarea {
   border-bottom: solid black;
   border-left: solid black;
   border-right: solid black;
+  border-top: solid black;
 
   #update-form{
     display: flex;
