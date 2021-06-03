@@ -13,7 +13,9 @@ module.exports = (db) => {
     ORDER BY created_at;`)
       .then(data => {
         const posts = data.rows;
-        res.json({ posts });
+        const currentUser = req.session.userId;
+
+        res.json({ posts, currentUser});
       })
       .catch(err => {
         res
@@ -202,8 +204,6 @@ SELECT numFavourite.*, favourites.* FROM numFavourite LEFT JOIN favourites ON nu
       }
     })
   })
-
-
 
   router.post("/newcomment", (req, res) => {
     let comment = req.body.comment;
