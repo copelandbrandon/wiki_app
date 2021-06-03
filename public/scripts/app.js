@@ -37,7 +37,7 @@ const submitCommentHandler = function() {
     const rating = $(this).find("#rating").val();
     const postId = $(this).attr("id");
     const dataObj = { comment, rating, postId };
-    $.post("/api/users/newcomment", dataObj)
+    $.post("/api/comments/newcomment", dataObj)
       .then(function(data) {
         $commentClear.val('');
         renderSingleComment(data);
@@ -186,18 +186,18 @@ const createPostHtml = function(obj) {
 const fetchWall = () => {
   $(".text-post").slideUp();
   $('#favourite').off('click');
-  $.get('/api/users/favourites')
+  $.get('/api/posts/favourites')
     .then(function(posts) {
       renderMyFavs(posts);
     })
     .then(function() {
-      $.get('api/users/my_posts')
+      $.get('api/posts/my_posts')
         .then(function(posts) {
           renderMyPosts(posts);
           $(".my-wall").slideDown();
           $(".mywall-info").slideDown();
 
-          //CLICK HANLDER for mywall rendered posts
+          //CLICK HANLDER for mywall rendered posts can be modularized
           $(".posts").find("#post_titles").click(function() {
             $(".single_post").hide();
             $("#comments_div").hide();
@@ -205,7 +205,7 @@ const fetchWall = () => {
             $(`form.single_post#${target}`).slideToggle();
             $("#comments_div").slideToggle();
             $('form.single_post').find('article').remove();
-            $.get(`/api/users/get_comments?target=${target}`)
+            $.get(`/api/comments/get_comments?target=${target}`)
               .then(function(comments) {
                 renderComments(comments);
               });
@@ -272,7 +272,7 @@ $(document).ready(function() {
         }
       });
 
-      //click handler for opening single post view
+      //click handler for opening single post view can be modularized
       $(".posts").find("#post_titles").click(function() {
         $(".single_post").hide();
         $("#comments_div").hide();
@@ -280,7 +280,7 @@ $(document).ready(function() {
         $(`form.single_post#${target}`).slideToggle();
         $("#comments_div").slideToggle();
         $('form.single_post').find('article').remove();
-        $.get(`/api/users/get_comments?target=${target}`)
+        $.get(`/api/comments/get_comments?target=${target}`)
           .then(function(comments) {
             renderComments(comments);
           });
@@ -300,14 +300,14 @@ $(document).ready(function() {
     const title = $('#title').val();
     const topic = $('#topic').val();
     const type = $('#type').val();
-    $.get(`/api/users/search?title=${title}&topic=${topic}&type=${type}`)
+    $.get(`/api/posts/search?title=${title}&topic=${topic}&type=${type}`)
       .then(function(posts) {
         $(".text-post").empty();
         renderPost(posts);
         favBtnHandler();
         submitCommentHandler();
 
-        //Click handler for rendered searched posts
+        //Click handler for rendered searched posts can be modularized
         $(".posts").find("#post_titles").click(function() {
           $(".single_post").hide();
           $("#comments_div").hide();
@@ -315,7 +315,7 @@ $(document).ready(function() {
           $(`form.single_post#${target}`).slideToggle();
           $("#comments_div").slideToggle();
           $('form.single_post').find('article').remove();
-          $.get(`/api/users/get_comments?target=${target}`)
+          $.get(`/api/comments/get_comments?target=${target}`)
             .then(function(comments) {
               renderComments(comments);
             });
@@ -354,7 +354,7 @@ $(document).ready(function() {
       $(this).find('.new-post-error').show();
       return $(this).find('.new-post-error').text('Please add a URL to your post.');
     }
-    $.post('/api/users/create/', newPostObj)
+    $.post('/api/posts/create/', newPostObj)
       .then(function(post) {
         $newPostForm.hide();
         renderPost(post);
