@@ -152,14 +152,82 @@ const createPostHtml = function (obj) {
   return $html;
 }
 
-//event handlers and AJAX calls
-$(document).ready(function () {
+const fetchWall = () => {
+  $(".text-post").slideUp();
+  $('#favourite').off('click');
 
+  $.get('/api/users/favourites')
+    .then(function (posts) {
+      renderMyFavs(posts);
+    })
+    .then(function () {
+      $.get('api/users/my_posts')
+        .then(function (posts) {
+          renderMyPosts(posts);
+          $(".my-wall").slideDown();
+
+          //CLICK HANLDER for mywall rendered posts
+          $(".posts").find("#post_titles").click(function () {
+            $(".single_post").hide();
+            $("#comments_div").hide();
+            let target = $(this).closest(".posts").attr('id');
+
+            $(`form.single_post#${target}`).slideToggle();
+            $("#comments_div").slideToggle();
+            $('form.single_post').find('article').remove();
+
+            $.post('/api/users/get_comments', { target })
+              .then(function (comments) {
+                renderComments(comments);
+              })
+          })
+
+          //FAVORITE BUTTON
+          $(`[name="hearts"]`).click(function () {
+            console.log("clicked heart");
+            const postId = $(this).closest(".posts").attr("id");
+            $.post("/api/users/liked", { postId })
+              .then()
+          })
+        })
+    })
+}
+
+$(document).ready(function () {
+  //HIDES all necessary elements on load
   $('#favourite').on('click');
   $(".new_post_form").hide();
   $("#searchBoxContainer").hide();
   $("#edit-name").hide();
-  $("#text-post").hide();
+  $("header, nav, #footer").hide();
+  $("#intro-message").hide();
+
+  //FADES Initial page loads
+  $("#intro-message").fadeToggle(700, function () {
+    setTimeout(function () {
+      $("#intro-message").fadeToggle(700);
+    }, 1500, function () {
+      $("#intro-message").off();
+    })
+  });
+
+  setTimeout(function () {
+    $("header, nav, #footer").fadeIn(700);
+  }, 3000);
+
+  //CLICKING home button
+  $("#pagename").click(function (ev) {
+    ev.preventDefault();
+
+    $(".my-wall").slideUp();
+    setTimeout(function() {
+      $(".text-post").slideDown();
+      $(".my-post").empty();
+      $(".favourite-post").empty();
+    },500)
+
+    $("#favourite").on('click', fetchWall);
+  })
 
   $.ajax('/api/users', {
     method: "GET",
@@ -221,7 +289,8 @@ $(document).ready(function () {
 
   $("#search_button").click(function () {
     $("#searchBoxContainer").slideToggle();
-    $("html, body").animate({scrollTop: 0}, "slow");
+    $("#edit-name").slideUp();
+    $("html, body").animate({ scrollTop: 0 }, "slow");
   })
 
   $(`#search-form`).submit(function (ev) {
@@ -270,45 +339,9 @@ $(document).ready(function () {
       })
   })
 
+  //MY WALL when clicked
   $('#favourite').click(function () {
-    $(".text-post").hide();
-    $('#favourite').off('click');
-
-
-    $.get('/api/users/favourites')
-      .then(function (posts) {
-        renderMyFavs(posts);
-      })
-      .then(function () {
-        $.get('api/users/my_posts')
-          .then(function (posts) {
-            renderMyPosts(posts);
-
-            //CLICK HANLDER for mywall rendered posts
-            $(".posts").find("#post_titles").click(function () {
-              $(".single_post").hide();
-              $("#comments_div").hide();
-              let target = $(this).closest(".posts").attr('id');
-
-              $(`form.single_post#${target}`).slideToggle();
-              $("#comments_div").slideToggle();
-              $('form.single_post').find('article').remove();
-
-              $.post('/api/users/get_comments', { target })
-                .then(function (comments) {
-                  renderComments(comments);
-                })
-            })
-
-            //FAVORITE BUTTON
-            $(`[name="hearts"]`).click(function () {
-              console.log("clicked heart");
-              const postId = $(this).closest(".posts").attr("id");
-              $.post("/api/users/liked", { postId })
-                .then()
-            })
-          })
-      })
+    fetchWall();
   })
 
   $("#new-post").click(function () {
@@ -331,9 +364,8 @@ $(document).ready(function () {
   });
 
   //OPENING UPDATE FORM
-  $("#update-button").click(function(){
-    console.log("reached");
-    $("#searchBoxContainer").slideToggle();
+  $("#update-button").click(function () {
+    $("#searchBoxContainer").slideUp();
     $("#edit-name").slideToggle();
   })
 

@@ -252,6 +252,7 @@ textarea {
 #edit-name {
   margin-left: auto;
   margin-right: auto;
+  margin-top: 80px;
   right: 0px;
   font-size: small;
   height: max-content;
@@ -262,6 +263,7 @@ textarea {
   border-bottom: solid black;
   border-left: solid black;
   border-right: solid black;
+  border-top: solid black;
 
   #update-form{
     display: flex;
