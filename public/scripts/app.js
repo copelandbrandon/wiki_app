@@ -68,7 +68,7 @@ const submitCommentHandler = function () {
 const renderPost = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
-    let $wrapper = `<article class="posts" id ="${obj.post_id}" style="background-image": linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
+    let $wrapper = `<article class="posts" id ="${obj.post_id}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
     let $commentDiv = $(`
       <form class = "single_post" id = "${obj.post_id}">
       <span id = "post_info">
@@ -137,7 +137,7 @@ const renderSingleComment = function(comment) {
   let $commentArticle = $(`
   <article class ='comment_article'>
     <header>
-      <p>${comment_body}</p>
+      <p>${commentBody}</p>
     </header>
     <div>
       <span> By: ${username}</span>
