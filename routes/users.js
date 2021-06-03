@@ -105,7 +105,6 @@ module.exports = (db) => {
         if (data.rows.length < 1) {
           db.query(`INSERT INTO favourites (post_id, viewer_id)
         VALUES (${postId}, ${user});`)
-<<<<<<< HEAD
             .then(function() {
               db.query(`SELECT COUNT(favourites.*) as num_favs, posts.id, posts.title FROM favourites INNER JOIN posts ON posts.id = post_id WHERE posts.id = $1 GROUP BY posts.id;`, [postId])
                 .then(function(data) {
@@ -153,38 +152,6 @@ module.exports = (db) => {
   });
 
   //POST router for adding a new comment onto a post
-=======
-        .then(function() {
-          db.query(`SELECT COUNT(favourites.*) as num_favs, posts.id, posts.title FROM favourites INNER JOIN posts ON posts.id = post_id WHERE posts.id = $1 GROUP BY posts.id;`, [postId])
-            .then(function(data) {
-              const counter = data.rows[0]
-              res.json({ counter });
-            })
-        })
-      } else {
-        console.log("reached delete")
-        db.query(`
-        DELETE FROM favourites WHERE post_id = ${postId} AND viewer_id = ${user};
-        `)
-        .then(function() {
-          db.query(`SELECT COUNT(favourites.*) as num_favs, posts.id, posts.title FROM favourites INNER JOIN posts ON posts.id = post_id WHERE posts.id = $1 GROUP BY posts.id;`, [postId])
-            .then(function(data) {
-              let counter = data.rows[0]
-              if (data.rows[0] === undefined) {
-                console.log('reached delete in favourites counter');
-                counter = 0;
-                res.json({ counter });
-              } else {
-                console.log('data in delete',data.rows[0]);
-                res.json({ counter });
-              }
-            })
-        })
-      }
-    })
-  })
-
->>>>>>> origin/redheart
   router.post("/newcomment", (req, res) => {
     let comment = req.body.comment;
     let userId = req.session.userId;
