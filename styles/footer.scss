@@ -1,23 +1,24 @@
+// all the footer style
 #footer {
   width:100%;
   display: flex;
   justify-content: center;
-}
-.social {
-  text-align: center;
-}
-.fab {
-  color:black;
-}
-.fa {
-  color:black;
-}
-.footer-text{
-  text-align: center;
-}
-.fab:hover {
-  color:rgb(62, 146, 214);
-}
-.fa:hover {
-  color:lightblue;
+  .social {
+    text-align: center;
+  }
+  .fab {
+    color:black;
+  }
+  .fa {
+    color:black;
+  }
+  .footer-text{
+    text-align: center;
+  }
+  .fab:hover {
+    color:rgb(62, 146, 214);
+  }
+  .fa:hover {
+    color:lightblue;
+  }
 }

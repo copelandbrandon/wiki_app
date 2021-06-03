@@ -10,25 +10,98 @@
   overflow-x: hidden;
   overflow-y: scroll;
   border-radius: 25px;
-}
 
+  form.single_post {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+    font-family: 'Roboto Mono, monospace';
 
-form.single_post {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
+    #description_h{
+      margin-bottom: 15px;
+      margin-top: 10px;
+      color: rgb(70, 68, 68);
+      font-weight: 10;
+    }
 
-#comments_section {
-  margin-top: 30px;
-}
+    hr {
+      background-color: rgb(255, 255, 255);
+      height: 0.1rem;
+      margin-left: auto;
+      margin-right: auto;
+      width: 200px;
+    }
 
-#new_comment {
-  border:none;
-  width: 100%;
-  background-color: white;
-  resize: none;
-  font-size: 12px;
+    a:hover ~ hr{
+      transition: 0.3s;
+      background-color: black;
+    }
+
+    h4{
+      font-size: 50px;
+      color: black;
+      margin-top: -10px;
+    }
+
+    h6{
+      font-size: 30px;
+      margin-bottom: 5px;
+      color: black;
+    }
+
+    a{
+      color: black;
+      text-decoration: none;
+    }
+
+    #post_info {
+      height: auto;
+      width: auto;
+      text-align: center;
+      padding: 10px;
+      background: linear-gradient(-45deg,rgb(238, 234, 234), rgb(175, 165, 165), #848788, #3e4140);
+      background-size: 400% 400%;
+      animation: gradient 12s ease infinite;
+    }
+
+    .submitComment{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-top: -35px;
+
+      button{
+        background: none;
+        border: none;
+        cursor: pointer;
+        line-height: 1.5;
+        font: 600 1.2rem 'Roboto Slab', sans-serif;
+        padding: 0.5em 1.3em;
+        letter-spacing: 0.05rem;
+        &:focus { outline: 2px dotted #55D7DC; }
+      }
+      button:hover{
+        color: rgb(206, 4, 4);
+      }
+      #rating {
+        width: 250px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    textarea#new_comment {
+      width: auto;
+      outline: none;
+      font-size: 30px;
+      height: max-content;
+      text-align: center;
+      border:none;
+      background-color: white;
+      resize: none;
+      }
+  }
 }
 
 footer {
@@ -38,107 +111,7 @@ footer {
   margin-right: 10px;
 }
 
-#comment_article {
-  height:80px;
-  font-size:12px;
-}
-
-#post_info {
-  height: auto;
-  width: auto;
-  text-align: center;
-  padding: 10px;
-  background: linear-gradient(-45deg,rgb(238, 234, 234), rgb(175, 165, 165), #848788, #3e4140);
-  background-size: 400% 400%;
-  animation: gradient 12s ease infinite;
-}
-
-
-.single_post{
-  background-color: white;
-  font-family: 'Roboto Mono, monospace';
-
-
-  hr {
-    background-color: rgb(255, 255, 255);
-    height: 0.1rem;
-    margin-left: auto;
-    margin-right: auto;
-    width: 200px;
-  }
-
-  a:hover ~ hr{
-    transition: 0.3s;
-    background-color: black;
-  }
-
-  h4{
-    font-size: 50px;
-    color: black;
-    margin-bottom: -60px;
-  }
-
-  h6{
-    font-size: 30px;
-    margin-bottom: 5px;
-    color: black;
-  }
-
-  #description_h{
-    margin-bottom: 15px;
-    margin-top: 10px;
-    color: rgb(70, 68, 68);
-    font-weight: 10;
-  }
-
-  a{
-    color: black;
-    text-decoration: none;
-  }
-
-  h7{
-    margin-left: 40px;
-    margin-right: 40px;
-    height: 40px;
-  }
-}
-
-textarea#new_comment {
-width: auto;
-outline: none;
-font-size: 30px;
-height: max-content;
-text-align: center;
-}
-
-#rating {
-  width: 250px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.submitComment{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  margin-top: -35px;
-
-  button{
-    background: none;
-    border: none;
-    cursor: pointer;
-    line-height: 1.5;
-    font: 600 1.2rem 'Roboto Slab', sans-serif;
-    padding: 0.5em 1.3em;
-    letter-spacing: 0.05rem;
-    &:focus { outline: 2px dotted #55D7DC; }
-  }
-  button:hover{
-    color: rgb(206, 4, 4);
-  }
-}
-
+// style for new comment
 .comment_article{
   border: solid black;
   margin: 10px;
@@ -161,9 +134,7 @@ text-align: center;
   }
 }
 
-
-
-
+//declearation for keyframe
 @keyframes gradient {
   0% {
       background-position: 0% 50%;

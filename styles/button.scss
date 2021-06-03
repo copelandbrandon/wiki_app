@@ -48,6 +48,7 @@
 .update-prof {
   @include btn-border-drawing(#000000, #1277d6, 4px, bottom, right);
 }
+
 //general button style
 .btn {
   background: none;
@@ -58,4 +59,9 @@
   padding: 0.5em 1.3em;
   letter-spacing: 0.05rem;
   &:focus { outline: 2px dotted #55D7DC; }
+}
+
+#source_button{
+  font-size: large;
+  font-weight: bolder;
 }

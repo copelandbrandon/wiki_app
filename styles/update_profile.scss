@@ -1,0 +1,45 @@
+#edit-name {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 80px;
+  right: 0px;
+  font-size: small;
+  height: max-content;
+  width: 525px;
+  padding: 6px;
+  background-color: white;
+  border-radius: 0px 0px 15px 15px;
+  border-bottom: solid black;
+  border-left: solid black;
+  border-right: solid black;
+  border-top: solid black;
+
+  #update-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  textarea {
+    border-radius: 25px;
+    font-size: small;
+    resize: none;
+    overflow: hidden;
+    outline: none;
+    margin-left: 20%;
+    margin-right: 33%;
+    text-align: center;
+  }
+
+  button{
+    width: 40%;
+    margin-left: 30%;
+    margin-right: 33%;
+    margin-top:7px;
+    background-color: black;
+    color: white;
+    font-family: 'Roboto Mono, monospace';
+    font-weight: bold;
+    border-radius: 15px;
+  }
+}
