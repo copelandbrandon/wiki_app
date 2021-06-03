@@ -192,7 +192,6 @@ const fetchWall = () => {
             const postId = $(this).closest(".posts").attr("id");
             $.post("/api/users/liked", { postId })
               .then(function (post) {
-                console.log('value of post: ', post);
                 if (post.counter === 0) {
                   let zeroCounter = '0';
                   return zeroCounter;
@@ -286,7 +285,6 @@ $(document).ready(function () {
 
         $.post("/api/users/newcomment", dataObj)
           .then(function (data) {
-            console.log(comment);
             $commentClear.val('');
             renderSingleComment(data);
           })
@@ -344,7 +342,6 @@ $(document).ready(function () {
           const postId = $(this).closest(".posts").attr("id");
           $.post("/api/users/liked", { postId })
             .then(function (post) {
-              console.log('value of post: ', post);
               if (post.counter === 0) {
                 let zeroCounter = '0';
                 return zeroCounter;
@@ -408,7 +405,6 @@ $(document).ready(function () {
     const url = $('#new_url').val();
     const type = $('#new_type').val();
     const newPostObj = { title, topic, description, url, type };
-    console.log(newPostObj);
     if (title === "") {
       $(this).find('.new-post-error').show();
       return $(this).find('.new-post-error').text('Please add a title to your post.');
@@ -428,8 +424,23 @@ $(document).ready(function () {
         renderPost(post);
       }).then(function () {
 
-      // FAVORITE BUTTON
-      // $(`[name="hearts"]`).off('click');
+              //FAVORITE BUTTON
+              $(`[name="hearts"]`).off('click');
+              $(`[name="hearts"]`).click(function () {
+                let $source = $(this);
+                const postId = $(this).closest(".posts").attr("id");
+                $.post("/api/users/liked", { postId })
+                  .then(function (post) {
+                    if (post.counter === 0) {
+                      let zeroCounter = '0';
+                      return zeroCounter;
+                    }
+                    return `${post.counter.num_favs}`;
+                  })
+                  .then(function (counterVal) {
+                    $source.siblings('.favs-counter').text(counterVal);
+                  })
+              })
       })
 
   });

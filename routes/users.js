@@ -142,7 +142,7 @@ SELECT numFavourite.*, favourites.* FROM numFavourite LEFT JOIN favourites ON nu
       VALUES ($1, $2, $3, $4, $5, $6)
     `, [url, title, description, poster_id, type, topic])
       .then(() => {
-        return db.query(`SELECT posts.*, users.name AS poster_name, types.*, COUNT(favourites.*) as num_favs
+        return db.query(`SELECT posts.*, posts.id as post_id, users.name AS poster_name, types.*, COUNT(favourites.*) as num_favs
         FROM posts INNER JOIN users ON users.id = poster_id
         INNER JOIN types ON resource_type_id = types.id
         LEFT JOIN favourites ON posts.id = post_id
