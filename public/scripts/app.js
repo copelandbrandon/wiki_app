@@ -186,6 +186,7 @@ const fetchWall = () => {
           })
 
           //FAVORITE BUTTON
+          $(`[name="hearts"]`).off('click');
           $(`[name="hearts"]`).click(function () {
             let $source = $(this);
             const postId = $(this).closest(".posts").attr("id");
@@ -255,6 +256,7 @@ $(document).ready(function () {
       $("#comments_div").hide();
 
       //FAVORITE BUTTON
+      $(`[name="hearts"]`).off('click');
       $(`[name="hearts"]`).click(function () {
         let $source = $(this);
         const postId = $(this).closest(".posts").attr("id");
@@ -332,6 +334,7 @@ $(document).ready(function () {
         renderPost(posts);
 
         //FAVORITE BUTTON
+        $(`[name="hearts"]`).off('click');
         $(`[name="hearts"]`).click(function () {
           let $source = $(this);
           const postId = $(this).closest(".posts").attr("id");
@@ -402,6 +405,10 @@ $(document).ready(function () {
     $.post('/api/users/create/', newPostObj)
       .then(function (post) {
         renderPost(post);
+      }).then(function () {
+
+      // FAVORITE BUTTON
+      // $(`[name="hearts"]`).off('click');
       })
 
   });

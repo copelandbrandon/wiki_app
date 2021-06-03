@@ -142,12 +142,16 @@ SELECT numFavourite.*, favourites.* FROM numFavourite LEFT JOIN favourites ON nu
       VALUES ($1, $2, $3, $4, $5, $6)
     `, [url, title, description, poster_id, type, topic])
       .then(() => {
-        return db.query(`SELECT posts.*, users.name AS poster_name, types.*
+        return db.query(`SELECT posts.*, users.name AS poster_name, types.*, COUNT(favourites.*) as num_favs
         FROM posts INNER JOIN users ON users.id = poster_id
-        INNER JOIN types ON resource_type_id = types.id WHERE posts.url = $1`, [url])
+        INNER JOIN types ON resource_type_id = types.id
+        LEFT JOIN favourites ON posts.id = post_id
+        WHERE posts.url = $1
+        GROUP BY posts.id, types.id, users.name;`, [url])
       })
       .then(data => {
         const posts = data.rows;
+        console.log("these are the data", data.rows);
         res.json({ posts });
       })
       .catch(err => {
