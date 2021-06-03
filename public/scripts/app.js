@@ -212,16 +212,13 @@ const fetchWall = () => {
     })
     .then(function() {
       $.get('api/posts/my_posts')
-        .then(function(posts) {
-          renderMyPosts(posts);
-          findFavourites();
           $(".my-wall").slideDown();
           $(".mywall-info").slideDown();
           singlePostHandler();
           favBtnHandler();
         });
-    });
-};
+    };
+
 
 //CREATE AN ARRAY OF POST IDS OF FAVORITES
 const favsArray = (data) => {
@@ -375,6 +372,8 @@ $(document).ready(function () {
         renderPost(post);
       }).then(function () {
         favBtnHandler();
+        submitCommentHandler();
+        singlePostHandler();
       });
   });
 
