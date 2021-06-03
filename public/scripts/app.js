@@ -1,3 +1,4 @@
+//IMAGES obj
 const images = {
   1: "../images/video_symbol.png",
   2: "../images/article_symbol.png",
@@ -8,45 +9,53 @@ const images = {
   7: "../images/podcast_symbol.png"
 };
 
-//will add a handler to the favourites button
-const favBtnHandler = function() {
+//FAVOURITE BUTTON HANDLER
+const favBtnHandler = function () {
   $(`[name="hearts"]`).off('click');
-  $(`[name="hearts"]`).click(function() {
+  $(`[name="hearts"]`).click(function () {
+    $(this).toggleClass("makered");
+
     let $source = $(this);
     const postId = $(this).closest(".posts").attr("id");
     $.post("/api/users/liked", { postId })
-      .then(function(post) {
+      .then(function (post) {
         if (post.counter === 0) {
           let zeroCounter = '0';
           return zeroCounter;
         }
         return `${post.counter.num_favs}`;
       })
-      .then(function(counterVal) {
+      .then(function (counterVal) {
         $source.siblings('.favs-counter').text(counterVal);
       });
   });
 };
 
-//will add a handler for comment submition
-const submitCommentHandler = function() {
-  $("form.single_post").submit(function(ev) {
+//COMMENT SUBMISSION HANDLER
+const submitCommentHandler = function () {
+  $("form.single_post").submit(function (ev) {
     ev.preventDefault();
     const $commentClear = $(this).find("#new_comment");
     const comment = $(this).find("#new_comment").val();
     const rating = $(this).find("#rating").val();
     const postId = $(this).attr("id");
+<<<<<<< HEAD
     const dataObj = { comment, rating, postId };
     $.post("/api/comments/newcomment", dataObj)
       .then(function(data) {
+=======
+    const dataObj = { comment, rating, postId }
+    $.post("/api/users/newcomment", dataObj)
+      .then(function (data) {
+>>>>>>> origin/redheart
         $commentClear.val('');
         renderSingleComment(data);
       });
   });
 };
 
-//will place posts created by createPostHTML into the html for a single post view
-const renderPost = function(posts) {
+//RENDER A POSTS
+const renderPost = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
     let $wrapper = `<article class="posts" id ="${obj.post_id}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
@@ -79,8 +88,8 @@ const renderPost = function(posts) {
   }
 };
 
-//will append comments in correct order to intermediate div
-const renderComments = function(comments) {
+//APPHEND COMMENTS in order
+const renderComments = function (comments) {
   let $comment = $(`<div class="composed-comment"></div>`);
   for (const comment of comments.posts) {
     let commentBody = comment.comment_body;
@@ -109,10 +118,17 @@ const renderComments = function(comments) {
   }
 };
 
+<<<<<<< HEAD
 // will create the html and prepend a comment when a user adds one
 const renderSingleComment = function(comment) {
   let $comment = $(`<div class="composed-comment"></div>`);
   let commentBody = comment.posts[0].comment_body;
+=======
+//PREPEND COMMENT html
+const renderSingleComment = function (comment) {
+  let $comment = $(`<div class="composed-comment"></div>`)
+  let comment_body = comment.posts[0].comment_body;
+>>>>>>> origin/redheart
   let username = comment.posts[0].username;
   let rating = comment.posts[0].rating;
   let time = comment.posts[0].created_at;
@@ -130,6 +146,7 @@ const renderSingleComment = function(comment) {
     </footer>
   </article>
   `);
+
   //if the div doesnt already exist, creates it and appends new comment to it. otherwise prepends to existing
   if ($(`form#${comment.posts[0].post_id}`).find(`div.composed-comment`).length === 0) {
     $comment.prepend($commentArticle);
@@ -139,8 +156,8 @@ const renderSingleComment = function(comment) {
   }
 };
 
-//will prepend all favourited posts into favourites section of my wall
-const renderMyFavs = function(posts) {
+//PREPEND FAVOURITED POSTS into favourites section of my wall
+const renderMyFavs = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
     let wrapper = `<article class="posts" id ="${obj.post_id}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
@@ -148,8 +165,8 @@ const renderMyFavs = function(posts) {
   }
 };
 
-//will prepend all user created posts into my posts section of my wall
-const renderMyPosts = function(posts) {
+//PREPEND USER POSTS into my posts section of my wall
+const renderMyPosts = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
     let wrapper = `<article class="posts" id ="${obj.post_id}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
@@ -157,8 +174,8 @@ const renderMyPosts = function(posts) {
   }
 };
 
-//will dynamically create html elements for posts
-const createPostHtml = function(obj) {
+//CREATE html elements for posts
+const createPostHtml = function (obj) {
   let title = obj.title;
   let url = obj.url;
   let description = obj.description;
@@ -182,29 +199,50 @@ const createPostHtml = function(obj) {
   return $html;
 };
 
-//Will fetch the users posts and their favourites
+//FETCH the users posts and their favourites
 const fetchWall = () => {
   $(".text-post").slideUp();
   $('#favourite').off('click');
+<<<<<<< HEAD
   $.get('/api/posts/favourites')
     .then(function(posts) {
+=======
+
+  $.get('/api/users/favourites')
+    .then(function (posts) {
+>>>>>>> origin/redheart
       renderMyFavs(posts);
+
     })
+<<<<<<< HEAD
     .then(function() {
       $.get('api/posts/my_posts')
         .then(function(posts) {
+=======
+    .then(function () {
+      $.get('api/users/my_posts')
+        .then(function (posts) {
+>>>>>>> origin/redheart
           renderMyPosts(posts);
+          findFavourites();
+
           $(".my-wall").slideDown();
           $(".mywall-info").slideDown();
 
+<<<<<<< HEAD
           //CLICK HANLDER for mywall rendered posts can be modularized
           $(".posts").find("#post_titles").click(function() {
+=======
+          //CLICK HANLDER for mywall rendered posts
+          $(".posts").find("#post_titles").click(function () {
+>>>>>>> origin/redheart
             $(".single_post").hide();
             $("#comments_div").hide();
             let target = $(this).closest(".posts").attr('id');
             $(`form.single_post#${target}`).slideToggle();
             $("#comments_div").slideToggle();
             $('form.single_post').find('article').remove();
+<<<<<<< HEAD
             $.get(`/api/comments/get_comments?target=${target}`)
               .then(function(comments) {
                 renderComments(comments);
@@ -213,9 +251,50 @@ const fetchWall = () => {
           favBtnHandler();
         });
     });
+=======
+
+            $.post('/api/users/get_comments', { target })
+              .then(function (comments) {
+                renderComments(comments);
+
+              })
+          })
+          favBtnHandler();
+
+        })
+    })
+>>>>>>> origin/redheart
 };
 
-$(document).ready(function() {
+//CREATE AN ARRAY OF POST IDS OF FAVORITES
+const favsArray = (data) => {
+  let favs = [];
+
+  for (const post in data.posts) {
+    favs.push(data.posts[post].post_id);
+  }
+  return favs;
+}
+
+//FINDS THE FAVORITES ON THE PAGE
+const findFavourites = () => {
+  $.ajax('/api/users/favourites', {
+    method: "GET"
+  })
+    .then(function (data) {
+      const favsAr = favsArray(data);
+      $(`[name="hearts"]`).map(function () {
+        const postid = $(this).closest(".posts").attr("id");
+
+        if (favsAr.includes(Number(postid))) {
+          $(this).addClass("makered");
+        }
+      })
+    })
+}
+
+//JQUERY PAGE ELEMENTS
+$(document).ready(function () {
   //HIDES all necessary elements on load
   $('#favourite').on('click');
   $(".new_post_form").hide();
@@ -227,96 +306,137 @@ $(document).ready(function() {
   $('.new-post-error').hide();
 
   //FADES Intro message
-  $("#intro-message").fadeToggle(700, function() {
-    setTimeout(function() {
+  $("#intro-message").fadeToggle(700, function () {
+    setTimeout(function () {
       $("#intro-message").fadeToggle(700);
-    }, 1500, function() {
+    }, 1500, function () {
       $("#intro-message").off();
     });
   });
-  setTimeout(function() {
+  setTimeout(function () {
     $("header, nav, #footer").fadeIn(700);
   }, 3000);
 
   //CLICKING home button
-  $("#pagename").click(function(ev) {
+  $("#pagename").click(function (ev) {
     ev.preventDefault();
     $(".my-wall").slideUp();
     $(".mywall-info").slideUp();
-    setTimeout(function() {
+    setTimeout(function () {
       $(".text-post").slideDown();
       $(".my-post").empty();
       $(".favourite-post").empty();
     }, 500);
     $("#favourite").on('click', fetchWall);
   });
-  //
+
+  //INTIAL POST RENDERS
   $.ajax('/api/users', {
     method: "GET",
   })
-    .then(function(posts) {
+    .then(function (posts) {
       renderPost(posts);
     })
-    .then(function() {
+    .then(function () {
+      findFavourites();
       $(".single_post").hide();
       $("#comments_div").hide();
       favBtnHandler();
       submitCommentHandler();
-      //will close single post view when clicking outside of the single post but will ignore when clicking on the post to open it
-      $(document).on('click', function(event) {
+
+      //will close single post view when clicking outside
+      $(document).on('click', function (event) {
         const container = $(".posts");
+<<<<<<< HEAD
         const container2 = $("#comments_div");
+=======
+        const container2 = $("#comments_div")
+
+>>>>>>> origin/redheart
         //checking to make sure neither of these two containers are the target of the click
         if (!$(event.target).closest(container).length && !$(event.target).closest(container2).length) {
           $('#comments_div').slideUp();
         }
       });
 
+<<<<<<< HEAD
       //click handler for opening single post view can be modularized
       $(".posts").find("#post_titles").click(function() {
+=======
+      //click handler for opening single post view
+      $(".posts").find("#post_titles").click(function () {
+>>>>>>> origin/redheart
         $(".single_post").hide();
         $("#comments_div").hide();
         let target = $(this).closest(".posts").attr('id');
         $(`form.single_post#${target}`).slideToggle();
         $("#comments_div").slideToggle();
         $('form.single_post').find('article').remove();
+<<<<<<< HEAD
         $.get(`/api/comments/get_comments?target=${target}`)
           .then(function(comments) {
             renderComments(comments);
           });
       });
     });
+=======
+        $.post('/api/users/get_comments', { target })
+          .then(function (comments) {
+            renderComments(comments);
+          })
+      })
+    })
+
+>>>>>>> origin/redheart
 
   //click handler for toggling search bar
-  $("#search_button").click(function() {
+  $("#search_button").click(function () {
     $("#searchBoxContainer").slideToggle();
     $("#edit-name").slideUp();
     $("html, body").animate({ scrollTop: 0 }, "slow");
   });
 
   //submition handler for search form
-  $(`#search-form`).submit(function(ev) {
+  $(`#search-form`).submit(function (ev) {
     ev.preventDefault();
     const title = $('#title').val();
     const topic = $('#topic').val();
     const type = $('#type').val();
+<<<<<<< HEAD
     $.get(`/api/posts/search?title=${title}&topic=${topic}&type=${type}`)
       .then(function(posts) {
+=======
+    const dataObj = { title, topic, type };
+
+    $.post('/api/users/search', dataObj)
+      .then(function (posts) {
+>>>>>>> origin/redheart
         $(".text-post").empty();
         renderPost(posts);
         favBtnHandler();
         submitCommentHandler();
+        findFavourites();
 
+<<<<<<< HEAD
         //Click handler for rendered searched posts can be modularized
         $(".posts").find("#post_titles").click(function() {
+=======
+        //Click handler for rendered searched posts
+        $(".posts").find("#post_titles").click(function () {
+>>>>>>> origin/redheart
           $(".single_post").hide();
           $("#comments_div").hide();
           let target = $(this).closest(".posts").attr('id');
           $(`form.single_post#${target}`).slideToggle();
           $("#comments_div").slideToggle();
           $('form.single_post').find('article').remove();
+<<<<<<< HEAD
           $.get(`/api/comments/get_comments?target=${target}`)
             .then(function(comments) {
+=======
+          $.post('/api/users/get_comments', { target })
+            .then(function (comments) {
+>>>>>>> origin/redheart
               renderComments(comments);
             });
         });
@@ -324,15 +444,17 @@ $(document).ready(function() {
   });
 
   //click handler for rendering my wall
-  $('#favourite').click(function() {
+  $('#favourite').click(function () {
     fetchWall();
   });
+
   //click handler for opening new-post form
-  $("#new-post").click(function() {
+  $("#new-post").click(function () {
     $(".new_post_form").slideToggle();
   });
+
   //new post submition handler
-  $(".new_post_form").submit(function(ev) {
+  $(".new_post_form").submit(function (ev) {
     ev.preventDefault();
     const $newPostForm = $(this);
     const title = $('#new_title').val();
@@ -354,28 +476,35 @@ $(document).ready(function() {
       $(this).find('.new-post-error').show();
       return $(this).find('.new-post-error').text('Please add a URL to your post.');
     }
+<<<<<<< HEAD
     $.post('/api/posts/create/', newPostObj)
       .then(function(post) {
+=======
+    $.post('/api/users/create/', newPostObj)
+      .then(function (post) {
+>>>>>>> origin/redheart
         $newPostForm.hide();
         renderPost(post);
-      }).then(function() {
+      }).then(function () {
         favBtnHandler();
       });
   });
 
   //click handler for opening name update form
-  $("#update-button").click(function() {
+  $("#update-button").click(function () {
     $("#searchBoxContainer").slideUp();
     $("#edit-name").slideToggle();
   });
 
   //Submition for name update form
-  $("#update-form").submit(function(ev) {
+  $("#update-form").submit(function (ev) {
     ev.preventDefault();
     const newName = $("#username_text").val();
+
     $.post("/api/users/update-name", { newName })
-      .then(function() {
-        location.reload();
+      .then(function () {
+        $("#logged_user").text(`${newName}`);
+        $("#edit-name").slideToggle();
       });
   });
 });

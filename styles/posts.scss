@@ -18,9 +18,9 @@
   color: #f4f1ec;
   margin: 10px;
   text-align: center;
-  width: 350px;
-  height: 400px;
-  padding: 5px;
+  width: 250px;
+  height: 300px;
+  padding: 10px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -87,12 +87,15 @@ a {
 }
 
 .fa-heart:hover {
-  color:red;
+  color:rgb(255, 0, 0);
 }
 
+.makered{
+  color: rgb(173, 0, 0);
+}
 
 .mywall-info{
-  margin-top:50px;
+  margin-top:70px;
   display:flex;
   justify-content: space-around;
   margin-bottom:-150px;
