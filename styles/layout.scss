@@ -1,9 +1,8 @@
 // See: https://sass-lang.com/
-
+// General web page style
 html {
   box-sizing: border-box;
 }
-
 *, *:before, *:after {
   box-sizing: inherit;
 }
@@ -16,7 +15,6 @@ body {
   border:none;
   width: 95vw;
   overflow-x: hidden;
-
 }
 
 #intro-message {

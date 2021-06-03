@@ -1,4 +1,4 @@
-// preset groups of CSS declarations for buttons
+//groups of CSS declarations for LOGOUT AND UPDATE
 @mixin btn-border-drawing($color: #ccc, $hover: black, $width: 2px, $vertical: top, $horizontal: left, $duration: 0.25s) {
   box-shadow: inset 0 0 0 $width $color;
   color: $color;
@@ -48,6 +48,7 @@
 .update-prof {
   @include btn-border-drawing(#000000, #1277d6, 4px, bottom, right);
 }
+
 //general button style
 .btn {
   background: none;
@@ -58,4 +59,9 @@
   padding: 0.5em 1.3em;
   letter-spacing: 0.05rem;
   &:focus { outline: 2px dotted #55D7DC; }
+}
+
+#source_button{
+  font-size: large;
+  font-weight: bolder;
 }

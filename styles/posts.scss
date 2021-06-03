@@ -10,8 +10,29 @@
   height: auto;
   padding: 50px;
   margin-top: 40px;
+  //shadow effect for all posts
+  .posts:hover{
+    transition: 0.4s;
+    box-shadow: 3px 3px rgb(158, 155, 155);
+  }
 }
 
+//font size declearation
+h4 {
+  font-size:22px;
+}
+
+h5 {
+  margin-top: -30px;
+  font-size: 15px;
+}
+
+h6 {
+  margin-top: -10px;
+  font-size: 12px;
+}
+
+//general styles for all posts at home page and my wall page
 .posts {
   border: 1px solid black;
   border-radius: 10px;
@@ -27,28 +48,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-
   box-shadow: 0px 0px 8px rgb(0, 0, 0)
 }
 
-.posts:hover{
-  transition: 0.4s;
-  box-shadow: 3px 3px rgb(158, 155, 155);
-}
-
-h4 {
-  font-size:25px;
-}
-
-h5 {
-  margin-top: -30px;
-  font-size: 15px;
-}
-
-h6 {
-  font-size: 12px;
-}
-
+//style for timeago package
 #timestamp {
   font-size: 12pt;
   display: flex;
@@ -56,6 +59,7 @@ h6 {
   margin: 0.5em;
 }
 
+//styles for my wall
 .my-wall {
   display: flex;
   flex-direction: row;
@@ -63,61 +67,52 @@ h6 {
   width: 100%;
   margin-top: 90px;
   padding: 50px;
+
+  .favourite-post {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 50%;
+    justify-content: space-around;
+    border-left: 3px solid black;
+  }
+  .my-post {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 50%;
+    justify-content: space-around;
+  }
 }
 
-.favourite-post {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 50%;
-  justify-content: space-around;
-  border-left: 3px solid black;
-}
-
-.my-post {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 50%;
-  justify-content: space-around;
-}
-
-a {
-  color: #f4f1ec;
-}
-
-.fa-heart:hover {
-  color:rgb(255, 0, 0);
-}
-
-.makered{
-  color: rgb(173, 0, 0);
-}
-
+//style for my wall label
 .mywall-info{
   margin-top:70px;
   display:flex;
   justify-content: space-around;
   margin-bottom:-150px;
+
+  //add typing animation for my wall label
+  .myfav {
+      width: 11ch;
+      animation: typing 2s steps(11), blink .5s step-end infinite alternate;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid;
+      font-family: monospace;
   }
 
-.myfav {
-    width: 11ch;
-    animation: typing 2s steps(11), blink .5s step-end infinite alternate;
+  .mypost {
+    width: 9ch;
+    animation: typing 2s steps(9), blink .5s step-end infinite alternate;
     white-space: nowrap;
     overflow: hidden;
     border-right: 3px solid;
     font-family: monospace;
-}
-.mypost {
-  width: 9ch;
-  animation: typing 2s steps(9), blink .5s step-end infinite alternate;
-  white-space: nowrap;
-  overflow: hidden;
-  border-right: 3px solid;
-  font-family: monospace;
+  }
 }
 
+// declearation of key frames
   @keyframes typing {
     from {
       width: 0
@@ -130,7 +125,13 @@ a {
     }
   }
 
+  a {
+    color: #f4f1ec;
+  }
 
+  .fa-heart:hover {
+    color:red;
+  }
 
 
 
