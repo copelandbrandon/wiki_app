@@ -202,12 +202,10 @@ const fetchWall = () => {
             $(".single_post").hide();
             $("#comments_div").hide();
             let target = $(this).closest(".posts").attr('id');
-
             $(`form.single_post#${target}`).slideToggle();
             $("#comments_div").slideToggle();
             $('form.single_post').find('article').remove();
-
-            $.post('/api/users/get_comments', { target })
+            $.get(`/api/users/get_comments?target=${target}`)
               .then(function(comments) {
                 renderComments(comments);
               });
@@ -282,7 +280,7 @@ $(document).ready(function() {
         $(`form.single_post#${target}`).slideToggle();
         $("#comments_div").slideToggle();
         $('form.single_post').find('article').remove();
-        $.post('/api/users/get_comments', { target })
+        $.get(`/api/users/get_comments?target=${target}`)
           .then(function(comments) {
             renderComments(comments);
           });
@@ -302,8 +300,7 @@ $(document).ready(function() {
     const title = $('#title').val();
     const topic = $('#topic').val();
     const type = $('#type').val();
-    const dataObj = { title, topic, type };
-    $.post('/api/users/search', dataObj)
+    $.get(`/api/users/search?title=${title}&topic=${topic}&type=${type}`)
       .then(function(posts) {
         $(".text-post").empty();
         renderPost(posts);
@@ -318,7 +315,7 @@ $(document).ready(function() {
           $(`form.single_post#${target}`).slideToggle();
           $("#comments_div").slideToggle();
           $('form.single_post').find('article').remove();
-          $.post('/api/users/get_comments', { target })
+          $.get(`/api/users/get_comments?target=${target}`)
             .then(function(comments) {
               renderComments(comments);
             });

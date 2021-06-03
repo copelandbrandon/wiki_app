@@ -21,51 +21,6 @@ module.exports = (db) => {
       });
   });
 
-  //POST router for submitting search form
-  router.post("/search", (req, res) => {
-    let topic = req.body.topic;
-    let type = req.body.type;
-    let title = req.body.title;
-    let queryString = `SELECT posts.*, posts.id as post_id, users.name AS poster_name, types.*, COUNT(favourites.*) as num_favs
-    FROM posts
-    INNER JOIN users ON users.id = poster_id
-    INNER JOIN types ON resource_type_id = types.id
-    LEFT JOIN favourites ON posts.id = favourites.post_id`;
-    let queryParams = [];
-    if (title !== "") {
-      queryParams.push(`%${title}%`);
-      queryString += ` WHERE LOWER(posts.title) LIKE LOWER($${queryParams.length})`;
-    }
-    if (topic !== "") {
-      queryParams.push(`%${topic}%`);
-      if (title) {
-        queryString += ` AND LOWER(posts.topic) LIKE LOWER($${queryParams.length})`;
-      } else {
-        queryString += ` WHERE LOWER(posts.topic) LIKE LOWER($${queryParams.length})`;
-      }
-    }
-    if (type !== "*") {
-      queryParams.push(`${type}`);
-      if (title || topic) {
-        queryString += ` AND resource_type_id = $${queryParams.length}`;
-      } else {
-        queryString += ` WHERE resource_type_id = $${queryParams.length}`;
-      }
-    }
-    queryString += ` GROUP BY posts.id, users.name, types.id
-    ORDER BY posts.created_at;`;
-    db.query(queryString, queryParams)
-      .then(data => {
-        const posts = data.rows;
-        res.json({ posts });
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
-
   //GET router for loading users favourites
   router.get("/favourites", (req, res) => {
     let userId = req.session.userId;
@@ -175,9 +130,9 @@ module.exports = (db) => {
       });
   });
 
-  //POST router for getting comments specific for a post, had to be POST as we are sending the post_id with the request
-  router.post("/get_comments", (req, res) => {
-    const postId = req.body.target;
+  //GET router for retrieving comments
+  router.get("/get_comments", (req, res) => {
+    const postId = req.query.target;
     db.query(`SELECT comments.*, users.name as username FROM comments
     INNER JOIN posts ON posts.id = post_id
     INNER JOIN users ON users.id = commenter_id
@@ -209,6 +164,51 @@ module.exports = (db) => {
       INNER JOIN users ON users.id = commenter_id
       WHERE comments.id = ${data.rows[0].id};`);
       })
+      .then(data => {
+        const posts = data.rows;
+        res.json({ posts });
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
+  //GET router for retrieving search results
+  router.get("/search", (req, res) => {
+    let topic = req.query.topic;
+    let type = req.query.type;
+    let title = req.query.title;
+    let queryString = `SELECT posts.*, posts.id as post_id, users.name AS poster_name, types.*, COUNT(favourites.*) as num_favs
+      FROM posts
+      INNER JOIN users ON users.id = poster_id
+      INNER JOIN types ON resource_type_id = types.id
+      LEFT JOIN favourites ON posts.id = favourites.post_id`;
+    let queryParams = [];
+    if (title !== "") {
+      queryParams.push(`%${title}%`);
+      queryString += ` WHERE LOWER(posts.title) LIKE LOWER($${queryParams.length})`;
+    }
+    if (topic !== "") {
+      queryParams.push(`%${topic}%`);
+      if (title) {
+        queryString += ` AND LOWER(posts.topic) LIKE LOWER($${queryParams.length})`;
+      } else {
+        queryString += ` WHERE LOWER(posts.topic) LIKE LOWER($${queryParams.length})`;
+      }
+    }
+    if (type !== "*") {
+      queryParams.push(`${type}`);
+      if (title || topic) {
+        queryString += ` AND resource_type_id = $${queryParams.length}`;
+      } else {
+        queryString += ` WHERE resource_type_id = $${queryParams.length}`;
+      }
+    }
+    queryString += ` GROUP BY posts.id, users.name, types.id
+      ORDER BY posts.created_at;`;
+    db.query(queryString, queryParams)
       .then(data => {
         const posts = data.rows;
         res.json({ posts });
