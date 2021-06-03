@@ -9,6 +9,22 @@ const images = {
   7: "../images/podcast_symbol.png"
 };
 
+//SINGLE POST VIEW HANDLER
+const singlePostHandler = function() {
+  $(".posts").find("#post_titles").click(function() {
+    $(".single_post").hide();
+    $("#comments_div").hide();
+    let target = $(this).closest(".posts").attr('id');
+    $(`form.single_post#${target}`).slideToggle();
+    $("#comments_div").slideToggle();
+    $('form.single_post').find('article').remove();
+    $.get(`/api/comments/get_comments?target=${target}`)
+      .then(function(comments) {
+        renderComments(comments);
+      });
+  });
+};
+
 //FAVOURITE BUTTON HANDLER
 const favBtnHandler = function () {
   $(`[name="hearts"]`).off('click');
@@ -39,15 +55,9 @@ const submitCommentHandler = function () {
     const comment = $(this).find("#new_comment").val();
     const rating = $(this).find("#rating").val();
     const postId = $(this).attr("id");
-<<<<<<< HEAD
     const dataObj = { comment, rating, postId };
     $.post("/api/comments/newcomment", dataObj)
       .then(function(data) {
-=======
-    const dataObj = { comment, rating, postId }
-    $.post("/api/users/newcomment", dataObj)
-      .then(function (data) {
->>>>>>> origin/redheart
         $commentClear.val('');
         renderSingleComment(data);
       });
@@ -118,17 +128,10 @@ const renderComments = function (comments) {
   }
 };
 
-<<<<<<< HEAD
 // will create the html and prepend a comment when a user adds one
 const renderSingleComment = function(comment) {
   let $comment = $(`<div class="composed-comment"></div>`);
   let commentBody = comment.posts[0].comment_body;
-=======
-//PREPEND COMMENT html
-const renderSingleComment = function (comment) {
-  let $comment = $(`<div class="composed-comment"></div>`)
-  let comment_body = comment.posts[0].comment_body;
->>>>>>> origin/redheart
   let username = comment.posts[0].username;
   let rating = comment.posts[0].rating;
   let time = comment.posts[0].created_at;
@@ -203,67 +206,22 @@ const createPostHtml = function (obj) {
 const fetchWall = () => {
   $(".text-post").slideUp();
   $('#favourite').off('click');
-<<<<<<< HEAD
   $.get('/api/posts/favourites')
     .then(function(posts) {
-=======
-
-  $.get('/api/users/favourites')
-    .then(function (posts) {
->>>>>>> origin/redheart
       renderMyFavs(posts);
 
     })
-<<<<<<< HEAD
     .then(function() {
       $.get('api/posts/my_posts')
         .then(function(posts) {
-=======
-    .then(function () {
-      $.get('api/users/my_posts')
-        .then(function (posts) {
->>>>>>> origin/redheart
           renderMyPosts(posts);
           findFavourites();
-
           $(".my-wall").slideDown();
           $(".mywall-info").slideDown();
-
-<<<<<<< HEAD
-          //CLICK HANLDER for mywall rendered posts can be modularized
-          $(".posts").find("#post_titles").click(function() {
-=======
-          //CLICK HANLDER for mywall rendered posts
-          $(".posts").find("#post_titles").click(function () {
->>>>>>> origin/redheart
-            $(".single_post").hide();
-            $("#comments_div").hide();
-            let target = $(this).closest(".posts").attr('id');
-            $(`form.single_post#${target}`).slideToggle();
-            $("#comments_div").slideToggle();
-            $('form.single_post').find('article').remove();
-<<<<<<< HEAD
-            $.get(`/api/comments/get_comments?target=${target}`)
-              .then(function(comments) {
-                renderComments(comments);
-              });
-          });
+          singlePostHandler();
           favBtnHandler();
         });
     });
-=======
-
-            $.post('/api/users/get_comments', { target })
-              .then(function (comments) {
-                renderComments(comments);
-
-              })
-          })
-          favBtnHandler();
-
-        })
-    })
->>>>>>> origin/redheart
 };
 
 //CREATE AN ARRAY OF POST IDS OF FAVORITES
@@ -278,14 +236,13 @@ const favsArray = (data) => {
 
 //FINDS THE FAVORITES ON THE PAGE
 const findFavourites = () => {
-  $.ajax('/api/users/favourites', {
+  $.ajax('/api/posts/favourites', {
     method: "GET"
   })
     .then(function (data) {
       const favsAr = favsArray(data);
       $(`[name="hearts"]`).map(function () {
         const postid = $(this).closest(".posts").attr("id");
-
         if (favsAr.includes(Number(postid))) {
           $(this).addClass("makered");
         }
@@ -331,7 +288,7 @@ $(document).ready(function () {
   });
 
   //INTIAL POST RENDERS
-  $.ajax('/api/users', {
+  $.ajax('/api/posts', {
     method: "GET",
   })
     .then(function (posts) {
@@ -347,47 +304,14 @@ $(document).ready(function () {
       //will close single post view when clicking outside
       $(document).on('click', function (event) {
         const container = $(".posts");
-<<<<<<< HEAD
         const container2 = $("#comments_div");
-=======
-        const container2 = $("#comments_div")
-
->>>>>>> origin/redheart
         //checking to make sure neither of these two containers are the target of the click
         if (!$(event.target).closest(container).length && !$(event.target).closest(container2).length) {
           $('#comments_div').slideUp();
         }
       });
-
-<<<<<<< HEAD
-      //click handler for opening single post view can be modularized
-      $(".posts").find("#post_titles").click(function() {
-=======
-      //click handler for opening single post view
-      $(".posts").find("#post_titles").click(function () {
->>>>>>> origin/redheart
-        $(".single_post").hide();
-        $("#comments_div").hide();
-        let target = $(this).closest(".posts").attr('id');
-        $(`form.single_post#${target}`).slideToggle();
-        $("#comments_div").slideToggle();
-        $('form.single_post').find('article').remove();
-<<<<<<< HEAD
-        $.get(`/api/comments/get_comments?target=${target}`)
-          .then(function(comments) {
-            renderComments(comments);
-          });
-      });
+      singlePostHandler();
     });
-=======
-        $.post('/api/users/get_comments', { target })
-          .then(function (comments) {
-            renderComments(comments);
-          })
-      })
-    })
-
->>>>>>> origin/redheart
 
   //click handler for toggling search bar
   $("#search_button").click(function () {
@@ -402,44 +326,14 @@ $(document).ready(function () {
     const title = $('#title').val();
     const topic = $('#topic').val();
     const type = $('#type').val();
-<<<<<<< HEAD
     $.get(`/api/posts/search?title=${title}&topic=${topic}&type=${type}`)
       .then(function(posts) {
-=======
-    const dataObj = { title, topic, type };
-
-    $.post('/api/users/search', dataObj)
-      .then(function (posts) {
->>>>>>> origin/redheart
         $(".text-post").empty();
         renderPost(posts);
         favBtnHandler();
         submitCommentHandler();
         findFavourites();
-
-<<<<<<< HEAD
-        //Click handler for rendered searched posts can be modularized
-        $(".posts").find("#post_titles").click(function() {
-=======
-        //Click handler for rendered searched posts
-        $(".posts").find("#post_titles").click(function () {
->>>>>>> origin/redheart
-          $(".single_post").hide();
-          $("#comments_div").hide();
-          let target = $(this).closest(".posts").attr('id');
-          $(`form.single_post#${target}`).slideToggle();
-          $("#comments_div").slideToggle();
-          $('form.single_post').find('article').remove();
-<<<<<<< HEAD
-          $.get(`/api/comments/get_comments?target=${target}`)
-            .then(function(comments) {
-=======
-          $.post('/api/users/get_comments', { target })
-            .then(function (comments) {
->>>>>>> origin/redheart
-              renderComments(comments);
-            });
-        });
+        singlePostHandler();
       });
   });
 
@@ -476,13 +370,8 @@ $(document).ready(function () {
       $(this).find('.new-post-error').show();
       return $(this).find('.new-post-error').text('Please add a URL to your post.');
     }
-<<<<<<< HEAD
     $.post('/api/posts/create/', newPostObj)
       .then(function(post) {
-=======
-    $.post('/api/users/create/', newPostObj)
-      .then(function (post) {
->>>>>>> origin/redheart
         $newPostForm.hide();
         renderPost(post);
       }).then(function () {

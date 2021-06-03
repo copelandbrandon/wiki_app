@@ -45,7 +45,7 @@ const commentsRoutes = require("./routes/comments");
 // Note: Feel free to replace the example routes below with your own
 app.use("/api/users", usersRoutes(db));
 app.use("/api/posts", postsRoutes(db));
-app.use("api/comments", commentsRoutes(db));
+app.use("/api/comments", commentsRoutes(db));
 // Note: mount other resources here, using the same pattern above
 
 
