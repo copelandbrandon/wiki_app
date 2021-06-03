@@ -165,6 +165,7 @@ const fetchWall = () => {
         .then(function (posts) {
           renderMyPosts(posts);
           $(".my-wall").slideDown();
+          $(".mywall-info").slideDown();
 
           //CLICK HANLDER for mywall rendered posts
           $(".posts").find("#post_titles").click(function () {
@@ -198,8 +199,38 @@ $(document).ready(function () {
   $('#favourite').on('click');
   $(".new_post_form").hide();
   $("#searchBoxContainer").hide();
-  $(".vl").hide();
+  $("#edit-name").hide();
+  $("header, nav, #footer").hide();
+  $("#intro-message").hide();
   $(".mywall-info").hide();
+
+  //FADES Initial page loads
+  $("#intro-message").fadeToggle(700, function () {
+    setTimeout(function () {
+      $("#intro-message").fadeToggle(700);
+    }, 1500, function () {
+      $("#intro-message").off();
+    })
+  });
+
+  setTimeout(function () {
+    $("header, nav, #footer").fadeIn(700);
+  }, 3000);
+
+  //CLICKING home button
+  $("#pagename").click(function (ev) {
+    ev.preventDefault();
+
+    $(".my-wall").slideUp();
+    $(".mywall-info").slideUp();
+    setTimeout(function() {
+      $(".text-post").slideDown();
+      $(".my-post").empty();
+      $(".favourite-post").empty();
+    },500)
+
+    $("#favourite").on('click', fetchWall);
+  })
 
   $.ajax('/api/users', {
     method: "GET",
@@ -313,8 +344,6 @@ $(document).ready(function () {
 
   //MY WALL when clicked
   $('#favourite').click(function () {
-    $(".vl").show();
-    $(".mywall-info").show();
     fetchWall();
   })
 

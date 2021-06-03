@@ -5,9 +5,11 @@ const router = express.Router();
 module.exports = (db) => {
   router.get("/", (req, res) => {
 
-    db.query(`SELECT posts.*, posts.id as post_id, users.name AS poster_name, types.*
+    db.query(`SELECT posts.*, posts.id as post_id, users.name AS poster_name, types.*, count(favourites.*) as num_favs
     FROM posts INNER JOIN users ON users.id = poster_id
     INNER JOIN types ON resource_type_id = types.id
+    LEFT JOIN favourites ON posts.id = post_id
+    GROUP BY posts.id, users.name, types.id
     ORDER BY created_at;`)
       .then(data => {
         const posts = data.rows;
