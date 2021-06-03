@@ -5,7 +5,8 @@ const images = {
   4: "../images/blog_symbol.png",
   5: "../images/documentation_symbol.png",
   6: "../images/resource_hub_symbol.png",
-  7: "../images/podcast_symbol.png"
+  7: "../images/podcast_symbol.png",
+  8: "../images/robots.png"
 }
 
 
@@ -16,15 +17,14 @@ const renderPost = function (posts) {
     let wrapper = `<article class="posts" id ="${obj.post_id}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
 
     let commentDiv = `
-      <form class = "single_post" id = "${obj.post_id}">
-      <span id = "post_info">
+      <form class = "single_post" id = "${obj.post_id}"  >
+      <span id = "post_info" >
       <h4>${obj.title}</h4>
       <h6>By: ${obj.poster_name}</h6>
       <div><span>${obj.topic} / </span><span>${obj.name}</span></div>
       <h6 id="description_h">${obj.description}</h6>
       <a href="${obj.url}">GO TO SOURCE</a>
       <hr/>
-      <div id="split"><hr/></div>
       </span>
       <textarea id="new_comment" placeholder="enter a comment..."></textarea>
       <div class= "submitComment" >
@@ -82,18 +82,18 @@ const renderSingleComment = function (comment) {
   let rating = comment.posts[0].rating;
   let time = comment.posts[0].created_at;
   let $commentArticle = $(`
-    <article class ='comment_article'>
-    <header>
-       <div>
-          <span> By: ${username}</span>
-       </div>
-    </header>
-       <p>${comment_body}</p>
-    <footer>
-       <div>${timeago.format(time)}</div>
-       <div>${rating}</div>
-    </footer>
-  </article>
+  <article class ='comment_article'>
+  <header>
+  <p>${comment_body}</p>
+  </header>
+  <div>
+    <span> By: ${username}</span>
+  </div>
+  <footer>
+     <div id="time">${timeago.format(time)}</div>
+     <div id="rating_number">Rating: ${rating}</div>
+  </footer>
+</article>
   `);
 
   //if the div doesnt already exist, creates it and appends new comment to it. otherwise prepends to existing

@@ -50,17 +50,16 @@ footer {
   width: auto;
   text-align: center;
   padding: 10px;
+  background: linear-gradient(-45deg,rgb(238, 234, 234), rgb(175, 165, 165), #848788, #3e4140);
+  background-size: 400% 400%;
+  animation: gradient 12s ease infinite;
 }
 
-#split hr{
-  margin-top: 10px;
-  background-color: rgb(155, 155, 155);
-  height: 0.20rem;
-  width: 70%;
-}
+
 .single_post{
   background-color: white;
   font-family: 'Roboto Mono, monospace';
+
 
   hr {
     background-color: rgb(255, 255, 255);
@@ -90,7 +89,7 @@ footer {
   #description_h{
     margin-bottom: 15px;
     margin-top: 10px;
-    color: rgb(133, 132, 132);
+    color: rgb(70, 68, 68);
     font-weight: 10;
   }
 
@@ -163,3 +162,19 @@ text-align: center;
     }
   }
 }
+
+
+
+
+@keyframes gradient {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+}
+
