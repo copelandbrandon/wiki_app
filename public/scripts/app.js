@@ -6,7 +6,6 @@ const images = {
   5: "../images/documentation_symbol.png",
   6: "../images/resource_hub_symbol.png",
   7: "../images/podcast_symbol.png",
-  8: "../images/robots.png"
 }
 
 
