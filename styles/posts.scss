@@ -46,7 +46,6 @@ h5 {
 }
 
 h6 {
-  margin-top: -10px;
   font-size: 12px;
 }
 
@@ -88,9 +87,12 @@ a {
 }
 
 .fa-heart:hover {
-  color:red;
+  color:rgb(255, 0, 0);
 }
 
+.makered{
+  color: rgb(173, 0, 0);
+}
 
 .mywall-info{
   margin-top:70px;
