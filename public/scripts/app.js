@@ -97,11 +97,11 @@ const renderSingleComment = function(comment) {
 
   //if the div doesnt already exist, creates it and appends new comment to it. otherwise prepends to existing
   if ($(`form#${comment.posts[0].post_id}`).find(`div.composed-comment`).length == 0) {
-    console.log("reached if", $(comment.posts[0].post_id).find(`div.composed-comment`).length);
+
     $comment.prepend($commentArticle);
     $(`form#${comment.posts[0].post_id}`).append($comment);
   } else {
-    console.log('reached else', $(comment.posts[0].post_id).find(`div.composed-comment`).length);
+
     $(`div.composed-comment`).prepend($commentArticle);
   }
 };
@@ -119,7 +119,6 @@ const renderMyFavs = function (posts) {
 const renderMyPosts = function (posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
-    console.log("myposts", obj);
     let wrapper = `<article class="posts" id ="${obj.post_id}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
     $(".my-post").prepend(wrapper);
   }
@@ -147,7 +146,7 @@ const createPostHtml = function (obj) {
   </body>
   <footer id= "timestamp">
     <span>Posted ${timeago.format(created)} </span>
-    <span class ="heart">${fav_count}<i class="fas fa-heart fa-2x" name="hearts"></i></span>
+    <span class ="heart"><span class ="favs-counter">${fav_count}</span><i class="fas fa-heart fa-2x" name="hearts"></i></span>
   </footer>
 
   `;
@@ -173,10 +172,20 @@ $(document).ready(function () {
 
       //FAVORITE BUTTON
       $(`[name="hearts"]`).click(function () {
-        console.log("clicked heart");
+        let $source = $(this);
         const postId = $(this).closest(".posts").attr("id");
         $.post("/api/users/liked", { postId })
-          .then()
+        .then(function(post) {
+          console.log('value of post: ',post);
+          if (post.counter === 0) {
+            let zeroCounter = '0';
+            return zeroCounter;
+          }
+          return `${post.counter.num_favs}`;
+        })
+        .then(function(counterVal) {
+          $source.siblings('.favs-counter').text(counterVal);
+        })
       })
 
 
@@ -226,6 +235,7 @@ $(document).ready(function () {
   $(`#search-form`).submit(function (ev) {
     ev.preventDefault();
 
+    
     const title = $('#title').val();
     const topic = $('#topic').val();
     const type = $('#type').val();
@@ -234,6 +244,24 @@ $(document).ready(function () {
       .then(function (posts) {
         $(".text-post").empty();
         renderPost(posts);
+
+            //FAVORITE BUTTON
+            $(`[name="hearts"]`).click(function () {
+              let $source = $(this);
+              const postId = $(this).closest(".posts").attr("id");
+              $.post("/api/users/liked", { postId })
+              .then(function(post) {
+                console.log('value of post: ',post);
+                if (post.counter === 0) {
+                  let zeroCounter = '0';
+                  return zeroCounter;
+                }
+                return `${post.counter.num_favs}`;
+              })
+              .then(function(counterVal) {
+                $source.siblings('.favs-counter').text(counterVal);
+              })
+            })
 
         //CLICK HANDLER for submitting comments
         $("form.single_post").submit(function (ev) {
@@ -259,7 +287,6 @@ $(document).ready(function () {
           $("#comments_div").slideToggle();
           $('form.single_post').find('article').remove();
 
-          console.log(target);
           $.post('/api/users/get_comments', { target })
             .then(function (comments) {
               renderComments(comments);
@@ -304,11 +331,22 @@ $(document).ready(function () {
 
             //FAVORITE BUTTON
             $(`[name="hearts"]`).click(function () {
-              console.log("clicked heart");
+              let $source = $(this);
               const postId = $(this).closest(".posts").attr("id");
               $.post("/api/users/liked", { postId })
-                .then()
+              .then(function(post) {
+                console.log('value of post: ',post);
+                if (post.counter === 0) {
+                  let zeroCounter = '0';
+                  return zeroCounter;
+                }
+                return `${post.counter.num_favs}`;
+              })
+              .then(function(counterVal) {
+                $source.siblings('.favs-counter').text(counterVal);
+              })
             })
+        
           })
       })
   })
