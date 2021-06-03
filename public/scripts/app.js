@@ -216,6 +216,7 @@ $(document).ready(function () {
   $("header, nav, #footer").hide();
   $("#intro-message").hide();
   $(".mywall-info").hide();
+  $('.new-post-error').hide();
 
   //FADES Initial page loads
   $("#intro-message").fadeToggle(700, function () {
@@ -277,6 +278,7 @@ $(document).ready(function () {
 
       $("form.single_post").submit(function (ev) {
         ev.preventDefault();
+        const $commentClear = $(this).find("#new_comment");
         const comment = $(this).find("#new_comment").val();
         const rating = $(this).find("#rating").val();
         const postId = $(this).attr("id");
@@ -284,6 +286,8 @@ $(document).ready(function () {
 
         $.post("/api/users/newcomment", dataObj)
           .then(function (data) {
+            console.log(comment);
+            $commentClear.val('');
             renderSingleComment(data);
           })
       })
@@ -362,6 +366,7 @@ $(document).ready(function () {
 
           $.post("/api/users/newcomment", dataObj)
             .then(function (data) {
+              comment.empty();
               renderComments(data)
             })
         })
@@ -396,14 +401,30 @@ $(document).ready(function () {
 
   $(".new_post_form").submit(function (ev) {
     ev.preventDefault();
+    const $newPostForm = $(this);
     const title = $('#new_title').val();
     const topic = $('#new_topic').val();
     const description = $('#new_description').val();
     const url = $('#new_url').val();
     const type = $('#new_type').val();
     const newPostObj = { title, topic, description, url, type };
+    console.log(newPostObj);
+    if (title === "") {
+      $(this).find('.new-post-error').show();
+      return $(this).find('.new-post-error').text('Please add a title to your post.');
+    } else if (topic === "") {
+      $(this).find('.new-post-error').show();
+      return $(this).find('.new-post-error').text('Please add a topic to your post.');
+    } else if (description === "") {
+      $(this).find('.new-post-error').show();
+      return $(this).find('.new-post-error').text('Please add a description to your post.');
+    } else if (url === "") {
+      $(this).find('.new-post-error').show();
+      return $(this).find('.new-post-error').text('Please add a URL to your post.');
+    }
     $.post('/api/users/create/', newPostObj)
       .then(function (post) {
+        $newPostForm.hide();
         renderPost(post);
       }).then(function () {
 
