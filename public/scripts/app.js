@@ -24,7 +24,7 @@ const favBtnHandler = function() {
       })
       .then(function(counterVal) {
         $source.siblings('.favs-counter').text(counterVal);
-      })
+      });
   });
 };
 
@@ -36,12 +36,12 @@ const submitCommentHandler = function() {
     const comment = $(this).find("#new_comment").val();
     const rating = $(this).find("#rating").val();
     const postId = $(this).attr("id");
-    const dataObj = { comment, rating, postId }
+    const dataObj = { comment, rating, postId };
     $.post("/api/users/newcomment", dataObj)
       .then(function(data) {
         $commentClear.val('');
         renderSingleComment(data);
-      })
+      });
   });
 };
 
@@ -49,8 +49,8 @@ const submitCommentHandler = function() {
 const renderPost = function(posts) {
   for (const obj of posts.posts) {
     let postHTML = createPostHtml(obj);
-    let wrapper = `<article class="posts" id ="${obj.post_id}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
-    let commentDiv = `
+    let $wrapper = `<article class="posts" id ="${obj.post_id}" style="background-image: linear-gradient(rgba(0, 0, 0, 0.8),rgba(0, 0, 0, 0.5)), url(${images[obj.resource_type_id]})">${postHTML}</article>`;
+    let $commentDiv = $(`
       <form class = "single_post" id = "${obj.post_id}">
       <span id = "post_info">
       <h4>${obj.title}</h4>
@@ -73,9 +73,9 @@ const renderPost = function(posts) {
        <button type="submit">SUBMIT</button>
        </div>
       </form>
-    `
-    $(".text-post").prepend(wrapper);
-    $("#comments_div").prepend(commentDiv);
+    `);
+    $(".text-post").prepend($wrapper);
+    $("#comments_div").prepend($commentDiv);
   }
 };
 
@@ -83,14 +83,14 @@ const renderPost = function(posts) {
 const renderComments = function(comments) {
   let $comment = $(`<div class="composed-comment"></div>`);
   for (const comment of comments.posts) {
-    let comment_body = comment.comment_body;
+    let commentBody = comment.comment_body;
     let username = comment.username;
     let rating = comment.rating;
     let time = comment.created_at;
     let $commentArticle = $(`
     <article class ='comment_article'>
     <header>
-    <p>${comment_body}</p>
+    <p>${commentBody}</p>
     </header>
     <div>
       <span> By: ${username}</span>
@@ -111,8 +111,8 @@ const renderComments = function(comments) {
 
 // will create the html and prepend a comment when a user adds one
 const renderSingleComment = function(comment) {
-  let $comment = $(`<div class="composed-comment"></div>`)
-  let comment_body = comment.posts[0].comment_body;
+  let $comment = $(`<div class="composed-comment"></div>`);
+  let commentBody = comment.posts[0].comment_body;
   let username = comment.posts[0].username;
   let rating = comment.posts[0].rating;
   let time = comment.posts[0].created_at;
@@ -123,7 +123,7 @@ const renderSingleComment = function(comment) {
           <span> By: ${username}</span>
        </div>
     </header>
-       <p>${comment_body}</p>
+       <p>${commentBody}</p>
     <footer>
        <div>${timeago.format(time)}</div>
        <div>${rating}</div>
@@ -131,7 +131,7 @@ const renderSingleComment = function(comment) {
   </article>
   `);
   //if the div doesnt already exist, creates it and appends new comment to it. otherwise prepends to existing
-  if ($(`form#${comment.posts[0].post_id}`).find(`div.composed-comment`).length == 0) {
+  if ($(`form#${comment.posts[0].post_id}`).find(`div.composed-comment`).length === 0) {
     $comment.prepend($commentArticle);
     $(`form#${comment.posts[0].post_id}`).append($comment);
   } else {
@@ -162,11 +162,9 @@ const createPostHtml = function(obj) {
   let title = obj.title;
   let url = obj.url;
   let description = obj.description;
-  let type = obj.name;
-  let topic = obj.topic;
   let created = obj.created_at;
   let name = obj.poster_name;
-  let fav_count = obj.num_favs;
+  let favCount = obj.num_favs;
   let $html = `
   <header>
     <h4 id = "post_titles">${title}</h4>
@@ -178,7 +176,7 @@ const createPostHtml = function(obj) {
   </body>
   <footer id= "timestamp">
     <span>Posted ${timeago.format(created)} </span>
-    <span class ="heart"><span class ="favs-counter">${fav_count}</span><i class="fas fa-heart fa-2x" name="hearts"></i></span>
+    <span class ="heart"><span class ="favs-counter">${favCount}</span><i class="fas fa-heart fa-2x" name="hearts"></i></span>
   </footer>
   `;
   return $html;
@@ -189,12 +187,12 @@ const fetchWall = () => {
   $(".text-post").slideUp();
   $('#favourite').off('click');
   $.get('/api/users/favourites')
-    .then(function (posts) {
+    .then(function(posts) {
       renderMyFavs(posts);
     })
     .then(function() {
       $.get('api/users/my_posts')
-        .then(function (posts) {
+        .then(function(posts) {
           renderMyPosts(posts);
           $(".my-wall").slideDown();
           $(".mywall-info").slideDown();
@@ -212,11 +210,11 @@ const fetchWall = () => {
             $.post('/api/users/get_comments', { target })
               .then(function(comments) {
                 renderComments(comments);
-              })
-          })
+              });
+          });
           favBtnHandler();
-        })
-    })
+        });
+    });
 };
 
 $(document).ready(function() {
@@ -236,7 +234,7 @@ $(document).ready(function() {
       $("#intro-message").fadeToggle(700);
     }, 1500, function() {
       $("#intro-message").off();
-    })
+    });
   });
   setTimeout(function() {
     $("header, nav, #footer").fadeIn(700);
@@ -251,7 +249,7 @@ $(document).ready(function() {
       $(".text-post").slideDown();
       $(".my-post").empty();
       $(".favourite-post").empty();
-    }, 500)
+    }, 500);
     $("#favourite").on('click', fetchWall);
   });
   //
@@ -269,7 +267,7 @@ $(document).ready(function() {
       //will close single post view when clicking outside of the single post but will ignore when clicking on the post to open it
       $(document).on('click', function(event) {
         const container = $(".posts");
-        const container2 = $("#comments_div")
+        const container2 = $("#comments_div");
         //checking to make sure neither of these two containers are the target of the click
         if (!$(event.target).closest(container).length && !$(event.target).closest(container2).length) {
           $('#comments_div').slideUp();
@@ -287,8 +285,8 @@ $(document).ready(function() {
         $.post('/api/users/get_comments', { target })
           .then(function(comments) {
             renderComments(comments);
-          })
-      })
+          });
+      });
     });
 
   //click handler for toggling search bar
